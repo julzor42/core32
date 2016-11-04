@@ -1,0 +1,35 @@
+CORE32SRC=$(wildcard $(CORE32PATH)/src/*.c)
+CORE32OBJ=$(patsubst %.c,%.o,$(CORE32SRC))
+CORE32INC=$(CORE32PATH)/inc
+
+CC=xc32-gcc
+CXX=xc32-g++
+LD=xc32-ld
+BIN2HEX=xc32-bin2hex
+
+CFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -Wall -MMD
+LDFLAGS += -mprocessor=$(PROC)
+
+OBJ += $(patsubst %.c,%.o,$(SRC)) $(CORE32OBJ)
+
+DFILES = $(patsubst %.o,%.d,$(OBJ))
+
+$(NAME): all
+
+all: $(OBJ)
+	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS)
+	$(BIN2HEX) -a $(NAME)
+
+clean:
+	rm -f $(OBJ) $(DFILES)
+
+fclean: clean
+	rm -f $(NAME) $(NAME).hex
+
+re: fclean all
+
+disas:
+	xc32-objdump -d $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
