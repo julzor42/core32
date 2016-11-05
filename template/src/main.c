@@ -24,7 +24,7 @@ void Program(Task_t* task)
       case TASK_IDLE:
       {
         GPIO_ToggleBits(PortA, PINS_ALL);
-        Task_Sleep(task, 1000);
+        Task_Sleep(task, 1000000);
       }
       break;
     }
