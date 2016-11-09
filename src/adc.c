@@ -26,13 +26,25 @@
 
 void ADC_Initialize()
 {
-  
+  AD1CON1 = 0;
+  AD1CON1bits.SSRC = 0b111; // Auto convert after end of sampling
+  // Tad length, must be at least than 65ns (= Tpb * 2 * (ADCS + 1))
+  AD1CON3bits.ADCS = 2; // Tpb * 2 * (2 + 1) = 75ns
+  AD1CON3bits.SAMC = 2; // Tad count, Sampling must be at least 132ns
+  AD1CON1bits.ON = 1;   // Enable ADC
 }
 
 unsigned int ADC_Read()
 {
   AD1CON1bits.DONE = 0;
   AD1CON1bits.SAMP = 1;
-  while (!AD1CON1bits.DONE);
+  System_DelayMs(10);
+  AD1CON1bits.SAMP = 0;
+  System_DelayMs(10);  
+  while (!AD1CON1bits.DONE)
+    ;
+  System_DelayMs(10);
+  AD1CON1bits.DONE = 1;    
+
   return ADC1BUF0;
 }

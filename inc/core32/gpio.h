@@ -89,6 +89,7 @@ typedef struct              Port_s
 #define GPIO_Read(p)           (p->PORT)
 #define GPIO_GetBits(p, b)     (p->PORT & (b))
 #define GPIO_SetBits(p, b)     p->LATSET = (b)
+#define GPIO_CheckBits(p, b)   (GPIO_GetBits(p, b) == (b))
 #define GPIO_ClearBits(p, b)   p->LATCLR = (b)
 #define GPIO_ToggleBits(p, b)  p->LATINV = (b)
 

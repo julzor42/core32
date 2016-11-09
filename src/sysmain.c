@@ -31,6 +31,10 @@ int main()
 {
   System_Initialize();
 
+  #ifdef UART_CONSOLE
+  UART_Initialize(UART_CONSOLE, UART_CONSOLE_SPEED, UART_READWRITE);
+  #endif
+
   Task_Initialize();
   Task_Create(Program, NULL);
   Task_Loop();

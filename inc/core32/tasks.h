@@ -37,7 +37,16 @@ typedef struct Task_s
     TaskHandler  Replace;
     void*        Data;
     unsigned int Events;
-    
+
+    union
+    {
+      struct // Flags
+      {
+	int CanSleep:1;
+      };
+      unsigned int Flags;
+    };
+  
     union
     {
       struct // Delay
@@ -62,6 +71,8 @@ enum TASK_STATE
     TASK_START   = 0,
     TASK_IDLE,
     TASK_EXIT,
+    TASK_WAKEUP,
+    TASK_USER,
     
     // Common states
     TASK_DELAY   = 0xffff0000,

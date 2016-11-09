@@ -77,6 +77,12 @@ void System_Initialize()
   _CP0_SET_COUNT  (0x00000000);
 }
 
+void System_Idle()
+{
+  OSCCONSET = 0x10;
+  asm volatile("wait");
+}
+
 void System_DelayUs(unsigned int Delay)
 {
   unsigned int nStart = _CP0_GET_COUNT();

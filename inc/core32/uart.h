@@ -78,4 +78,8 @@ unsigned char UART_GetChar        (unsigned int Port);
 void          UART_Write          (unsigned int Port, const unsigned char* Data, unsigned int Length);
 void          UART_Read           (unsigned int Port, unsigned char* Data, unsigned int Length);
 
+#ifndef UART_CONSOLE_SPEED
+#define UART_CONSOLE_SPEED 115200
+#endif
+
 #endif /* _UART_H_ */

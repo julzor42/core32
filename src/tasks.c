@@ -61,6 +61,7 @@ Task_t* Task_Create(TaskHandler Handler, void* Data)
   
   if (pTask != 0)
   {
+    memset(pTask, 0, sizeof(Task_t));
     pTask->Handler = Handler;
     pTask->Data  = Data;
   }
@@ -72,6 +73,8 @@ void Task_ProcessAll()
 {
   unsigned int nTask;
   Task_t*    pTask;
+
+  unsigned int AllowIdle = 0;
   
   for (nTask = 0; nTask < TASK_MAX; nTask++)
   {
@@ -88,8 +91,15 @@ void Task_ProcessAll()
         pTask->Handler = pTask->Replace;
       }
       if (pTask->State == TASK_EXITING) pTask->State   = TASK_EXIT;
+
+      AllowIdle |= pTask->CanSleep;
     }
-  } 
+  }
+
+  if (AllowIdle)
+    {
+      System_Idle();
+    }
 }
 
 void Task_Loop()
