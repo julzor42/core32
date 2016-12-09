@@ -34,8 +34,16 @@ void _mon_putc(char c)
 
 int _mon_getc(int canblock)
 {
-  while (!(UxSTA(UART_CONSOLE) & USTA_URXDA));
-  return UxRXREG(UART_CONSOLE);
+  if (canblock)
+  {
+    while (!UART_HasData(UART_CONSOLE));
+    return UxRXREG(UART_CONSOLE);
+  }
+
+  if (UART_HasData(UART_CONSOLE))
+    return UxRXREG(UART_CONSOLE);
+
+  return 0;
 }
 
 #endif
@@ -86,4 +94,19 @@ void UART_Read(unsigned int Port, unsigned char* Data, unsigned int Length)
 {
   while (--Length)
     (*Data++) = UART_GetChar(Port);
+}
+
+void UART_ReadLine(unsigned int Port, unsigned char* Data, unsigned int MaxLength)
+{
+  while (--MaxLength > 0)
+  {
+    *Data = UART_GetChar(Port);
+    
+    if (*Data == '\n')
+      break;
+
+    Data++;
+  }
+
+  *Data = 0;
 }

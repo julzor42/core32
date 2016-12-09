@@ -77,6 +77,7 @@ enum TASK_STATE
     // Common states
     TASK_DELAY   = 0xffff0000,
     TASK_WAITMASK,
+    TASK_WAITVAL,
     TASK_EXITING,
     TASK_AUTO    = -1
 };
@@ -90,6 +91,7 @@ void        Task_Process            (Task_t* pTask);
 
 void        Task_SetDelay           (Task_t* pTask, unsigned int DelayUs, unsigned int NextState);
 void        Task_WaitMask           (Task_t* pTask, unsigned int* pAddress, unsigned int Mask, unsigned int NextState);
+void        Task_WaitValue          (Task_t* pTask, unsigned int* pAddress, unsigned int Value, unsigned int NextState);
 void        Task_Exit               (Task_t* pTask, TaskHandler Replace);
 
 #define     Task_SetState(t, s)     t->State = (s)

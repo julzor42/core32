@@ -64,5 +64,6 @@ void          System_RestoreInterrupts  (unsigned int Status);
 #define System_DelayMs(ms)	System_DelayUs((ms) * 1000)
 #define System_TimeStart(var)  (var) = _CP0_GET_COUNT()
 #define System_TimeEnd(var)    (var) = (_CP0_GET_COUNT() - (var)) / CORE_US
+#define System_TimeNow()       (_CP0_GET_COUNT() / CORE_US)
 
 #endif /* _SYSTEM_H_ */

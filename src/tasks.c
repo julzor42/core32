@@ -120,7 +120,8 @@ void Task_Process(Task_t* pTask)
   switch (pTask->State)
   {
     case TASK_DELAY:    if ((_CP0_GET_COUNT() - pTask->DelayStart) / CORE_US >= pTask->Delay) pTask->State = pTask->DelayNextState; break;
-    case TASK_WAITMASK: if (*pTask->WaitAddress & pTask->WaitMask) pTask->State = pTask->WaitNextState; break;
+    case TASK_WAITMASK: if ((*pTask->WaitAddress & pTask->WaitMask) == pTask->WaitMask) pTask->State = pTask->WaitNextState; break;
+    case TASK_WAITVAL:  if (*pTask->WaitAddress == pTask->WaitMask) pTask->State = pTask->WaitNextState; break;
   }
 }
 
@@ -138,4 +139,12 @@ void Task_WaitMask(Task_t* pTask, unsigned int* pAddress, unsigned int Mask, uns
   pTask->State          = TASK_WAITMASK;
   pTask->WaitAddress    = pAddress;
   pTask->WaitMask       = Mask;
+}
+
+void Task_WaitValue(Task_t* pTask, unsigned int* pAddress, unsigned int Value, unsigned int NextState)
+{
+  pTask->WaitNextState  = NextState == TASK_AUTO ? pTask->State : NextState;
+  pTask->State          = TASK_WAITVAL;
+  pTask->WaitAddress    = pAddress;
+  pTask->WaitMask       = Value;  
 }

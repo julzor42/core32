@@ -66,7 +66,8 @@
 //
 #define UART_Enable(port)   UxMODESET(port) = UMODE_UARTEN
 #define UART_Disable(port)  UxMODECLR(port) = UMODE_UARTEN
-#define UART_IsEnabled(port)(UxMODE(Port) & UMODE_UARTEN)
+#define UART_IsEnabled(port)(UxMODE(port) & UMODE_UARTEN)
+#define UART_HasData(port)  (UxSTA(port) & USTA_URXDA)
 
 //
 // Functions
@@ -77,6 +78,7 @@ void          UART_PutString      (unsigned int Port, const unsigned char* Data)
 unsigned char UART_GetChar        (unsigned int Port);
 void          UART_Write          (unsigned int Port, const unsigned char* Data, unsigned int Length);
 void          UART_Read           (unsigned int Port, unsigned char* Data, unsigned int Length);
+void          UART_ReadLine       (unsigned int Port, unsigned char* Data, unsigned int MaxLength);
 
 #ifndef UART_CONSOLE_SPEED
 #define UART_CONSOLE_SPEED 115200
