@@ -1,4 +1,5 @@
 CORE32SRC=$(wildcard $(CORE32PATH)/src/*.c)
+CORE32SRC += $(wildcard $(CORE32PATH)/tasks/*.c)
 CORE32OBJ=$(patsubst %.c,%.o,$(CORE32SRC))
 CORE32INC=$(CORE32PATH)/inc
 
