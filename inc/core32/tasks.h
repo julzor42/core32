@@ -107,4 +107,7 @@ void        Task_Exit               (Task_t* pTask, TaskHandler Replace);
 #define     Task_SetEvent(t, i)     t->Events |= 1 << (i)
 #define     Task_ClearEvent(t, i)   t->Events &= ~(1 << (i))
 
+#define     Task_AllowSleep(t, i)   t->CanSleep = (i)
+#define     Task_AllowIdle(t, i)    t->CanIdle  = (i)
+
 #endif /* _TASK_H_ */
