@@ -71,12 +71,18 @@ Task_t* Task_Create(TaskHandler Handler, void* Data)
   return pTask;
 }
 
+__attribute__((weak)) void Task_OnSleepEnter() { }
+__attribute__((weak)) void Task_OnSleepExit() { }
+__attribute__((weak)) void Task_OnIdleEnter() { }
+__attribute__((weak)) void Task_OnIdleExit() { }
+
 void Task_ProcessAll()
 {
   unsigned int nTask;
   Task_t*    pTask;
 
-  unsigned int AllowIdle = 0;
+  unsigned int AllowIdle  = 1;
+  unsigned int AllowSleep = 1;
   
   for (nTask = 0; nTask < TASK_MAX; nTask++)
   {
@@ -94,13 +100,22 @@ void Task_ProcessAll()
       }
       if (pTask->State == TASK_EXITING) pTask->State   = TASK_EXIT;
 
-      AllowIdle |= pTask->CanSleep;
+      AllowIdle  &= pTask->CanIdle;
+      AllowSleep &= pTask->CanSleep;
     }
   }
 
-  if (AllowIdle)
+  if (AllowSleep)
+  {
+    Task_OnSleepEnter();
+    System_Sleep();
+    Task_OnSleepExit();
+  }
+  else if (AllowIdle)
     {
+      Task_OnIdleEnter();
       System_Idle();
+      Task_OnIdleExit();
     }
 }
 
@@ -149,4 +164,12 @@ void Task_WaitValue(Task_t* pTask, unsigned int* pAddress, unsigned int Value, u
   pTask->State          = TASK_WAITVAL;
   pTask->WaitAddress    = pAddress;
   pTask->WaitMask       = Value;  
+}
+
+void Task_Yield()
+{
+  // TODO:
+  // store current position in task
+  // return from task
+  // next task entry will resume at the same position
 }

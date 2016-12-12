@@ -42,7 +42,8 @@ typedef struct Task_s
     {
       struct // Flags
       {
-	int CanSleep:1;
+	      int CanSleep:1;
+        int CanIdle:1;
       };
       unsigned int Flags;
     };
