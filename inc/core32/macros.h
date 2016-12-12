@@ -61,4 +61,24 @@
 #define BIT_30      (1 << 30)
 #define BIT_31      (1 << 31)
 
+#define PRIORITY_0  0
+#define PRIORITY_1  1
+#define PRIORITY_2  2
+#define PRIORITY_3  3
+#define PRIORITY_4  4
+#define PRIORITY_5  5
+#define PRIORITY_6  6
+#define PRIORITY_7  7
+
+#define SUB_0       0
+#define SUB_1       1
+#define SUB_2       2
+#define SUB_3       3
+
+#define ENABLED     1
+#define DISABLED    0
+
+#define POLARITY_RISE 1
+#define POLARITY_FALL 0
+
 #endif /* _MACROS_H_ */

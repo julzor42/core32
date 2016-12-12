@@ -76,5 +76,7 @@
 void    Timer_Initialize    (unsigned int Timer, unsigned int Prescaler, unsigned short Period);
 void    Timer_Wait          (unsigned int Timer, unsigned int Cycles);
 void    Timer_SetInterrupt  (unsigned int Timer, unsigned int Enabled, unsigned int Priority, unsigned int SubPriority);
+void    Timer_EnableInterrupt(unsigned int Timer, unsigned int Enabled);
+void    Timer_ClearInterrupt(unsigned int Timer);
 
 #endif /* _TIMERS_H_ */

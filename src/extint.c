@@ -29,8 +29,6 @@ void INT_ClearExternalInterrupt(unsigned int Int)
 {
   switch (Int)
   {
-    case INT_1:
-    IFS0bits.INT1IF = 0;
-    break;
+    case INT_1: IFS0bits.INT1IF = 0; break;
   }
 }

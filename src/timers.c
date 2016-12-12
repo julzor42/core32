@@ -67,44 +67,62 @@ void Timer_Wait(unsigned int Timer, unsigned int Cycles)
   while ((Timer_Read(Timer) - Now) < Cycles);
 }
 
+void Timer_ClearInterrupt(unsigned int Timer)
+{
+  switch (Timer)
+  {
+    case TIMER_1: IFS0bits.T1IF = 0; break;
+    case TIMER_2: IFS0bits.T2IF = 0; break;
+    case TIMER_3: IFS0bits.T3IF = 0; break;
+    case TIMER_4: IFS0bits.T4IF = 0; break;
+    case TIMER_5: IFS0bits.T5IF = 0; break;
+  }
+}
+
+void Timer_EnableInterrupt(unsigned int Timer, unsigned int Enabled)
+{
+  switch (Timer)
+  {
+    case TIMER_1: IEC0bits.T1IE = Enabled; break;
+    case TIMER_2: IEC0bits.T2IE = Enabled; break;
+    case TIMER_3: IEC0bits.T3IE = Enabled; break;
+    case TIMER_4: IEC0bits.T4IE = Enabled; break;
+    case TIMER_5: IEC0bits.T5IE = Enabled; break;
+  }
+}
+
 void Timer_SetInterrupt(unsigned int Timer, unsigned int Enabled, unsigned int Priority, unsigned int SubPriority)
 {
+  Timer_EnableInterrupt(Timer, DISABLED);
+
   switch (Timer)
   {
     case TIMER_1:
       IPC1bits.T1IP = Priority;
       IPC1bits.T1IS = SubPriority;
-      IFS0bits.T1IF = 0;
-      IEC0bits.T1IE = Enabled;
       break;
       
     case TIMER_2:
       IPC2bits.T2IP = Priority;
       IPC2bits.T2IS = SubPriority;
-      IFS0bits.T2IF = 0;
-      IEC0bits.T2IE = Enabled;      
       break;
       
     case TIMER_3:
       IPC3bits.T3IP = Priority;
       IPC3bits.T3IS = SubPriority;
-      IFS0bits.T3IF = 0;
-      IEC0bits.T3IE = Enabled;      
       break;
       
     case TIMER_4:
       IPC4bits.T4IP = Priority;
       IPC4bits.T4IS = SubPriority;
-      IFS0bits.T4IF = 0;
-      IEC0bits.T4IE = Enabled;    
       break;
       
     case TIMER_5:
       IPC5bits.T5IP = Priority;
       IPC5bits.T5IS = SubPriority;
-      IFS0bits.T5IF = 0;
-      IEC0bits.T5IE = Enabled;      
       break;
   }
   
+  Timer_ClearInterrupt(Timer);
+  Timer_EnableInterrupt(Timer, Enabled);
 }
