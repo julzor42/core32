@@ -53,7 +53,8 @@
 //
 void          System_Initialize         ();
 void          System_Reset              ();
-void	      System_Idle		();
+void	        System_Idle		            ();
+void          System_Sleep              ();
 void          System_DelayUs            (unsigned int Delay);
 void          System_UnlockPPS          ();
 void          System_LockPPS            ();

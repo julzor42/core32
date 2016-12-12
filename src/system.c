@@ -79,6 +79,12 @@ void System_Initialize()
 
 void System_Idle()
 {
+  OSCCONCLR = 0x10;
+  asm volatile("wait");
+}
+
+void System_Sleep()
+{
   OSCCONSET = 0x10;
   asm volatile("wait");
 }
