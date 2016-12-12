@@ -24,6 +24,8 @@
 #include <core32.h>
 #include <core32/tasks.h>
 
+#include <string.h>
+
 #ifndef TASK_MAX
 #define TASK_MAX  8
 #endif

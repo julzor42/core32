@@ -130,6 +130,8 @@ void System_Reset()
   
   while (1)
     ;
+
+  t++;
 }
 
 #ifdef PIC32MX2

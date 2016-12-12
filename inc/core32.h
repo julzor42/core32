@@ -66,5 +66,6 @@
 #include <core32/nvm.h>
 #include <core32/adc.h>
 #include <core32/dma.h>
+#include <core32/extint.h>
 
 #endif /* _CORE32_H_ */
