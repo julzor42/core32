@@ -30,6 +30,13 @@
 //
 // Frequencies
 //
-#define SYSCLK 	80000000L     // System clock
-#define PBDIV	2             // Peripheral clock divider
+#define SYSTEM_FREQ 	      80000000L     // System clock
+#define SYSTEM_PBDIV	      2             // Peripheral clock divider
+#define SYSTEM_INT_MULTI                  // Multivectored interrupts
+
+//
+// Console
+// 
+#define UART_CONSOLE        UART_2
+#define UART_CONSOLE_SPEED  115200
 

@@ -41,9 +41,9 @@
 //
 // Macros
 //
-#define CORE_US     (SYSCLK / 2000000)
+#define CORE_US     (SYSTEM_FREQ / 2000000)
 
-#if PBDIV == 1
+#if SYSTEM_PBDIV == 1
   // From datasheet: When using the 1:1 PBCLK divisor,
   // the software should not read/write the peripheral SFR
   // in the SYSCLK cycle immediatly following the instruction
@@ -67,5 +67,6 @@
 #include <core32/adc.h>
 #include <core32/dma.h>
 #include <core32/extint.h>
+#include <core32/cn.h>
 
 #endif /* _CORE32_H_ */

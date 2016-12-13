@@ -55,13 +55,13 @@ void System_Initialize()
   _mtc0 (_CP0_CONFIG, _CP0_CONFIG_SELECT, config);
   
   // Configure interrupts
-#if defined(SYS_INT_SINGLE) || defined(SYS_INT_MULTI)
+#if defined(SYSTEM_INT_SINGLE) || defined(SYSTEM_INT_MULTI)
   // set the CP0 cause IV bit high
   asm volatile("mfc0 %0,$13" : "=r"(val));
   val |= 0x00800000;
   asm volatile("mtc0 %0,$13" : "+r"(val));
      
-#ifdef SYS_INT_MULTI
+#ifdef SYSTEM_INT_MULTI
   INTCONbits.MVEC = 1;
 #endif
      
@@ -71,10 +71,26 @@ void System_Initialize()
   
   // Disable JTAG
   DDPCONbits.JTAGEN = 0;
-  
+
+  // Setup peripheral clock
+  System_SetPBDiv(SYSTEM_PBDIV);
+
   // Setup core timer
   _CP0_SET_COMPARE(0xffffffff);
   _CP0_SET_COUNT  (0x00000000);
+}
+
+void System_SetPBDiv(unsigned int PbDiv)
+{
+  System_Unlock();
+  switch (PbDiv)
+  {
+    case 1: OSCCONbits.PBDIV = 0b00; break;
+    case 2: OSCCONbits.PBDIV = 0b01; break;
+    case 4: OSCCONbits.PBDIV = 0b10; break;
+    case 8: OSCCONbits.PBDIV = 0b11; break;
+  }
+  System_Lock();
 }
 
 void System_Idle()
@@ -134,18 +150,28 @@ void System_Reset()
   t++;
 }
 
-#ifdef PIC32MX2
-void System_UnlockPPS()
+void System_Unlock()
 {
   SYSKEY = 0x0;
   SYSKEY = 0xAA996655;
   SYSKEY = 0x556699AA;
+}
+
+void System_Lock()
+{
+  SYSKEY = 0x0;  
+}
+
+#ifdef PIC32MX2
+void System_UnlockPPS()
+{
+  System_Unlock();
   CFGCONbits.IOLOCK = 0;
 }
 
 void System_LockPPS()
 {
   CFGCONbits.IOLOCK = 1;
-  SYSKEY = 0x0;
+  System_Lock();
 } 
 #endif

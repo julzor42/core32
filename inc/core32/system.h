@@ -27,7 +27,7 @@
 //
 // Macros
 //
-#define PBCLK                  (SYSCLK / PBDIV)
+#define PBCLK                  (SYSTEM_FREQ / SYSTEM_PBDIV)
 
 //
 // Special function registers
@@ -58,11 +58,14 @@ void          System_Sleep              ();
 void          System_DelayUs            (unsigned int Delay);
 void          System_UnlockPPS          ();
 void          System_LockPPS            ();
+void          System_Unlock             ();
+void          System_Lock               ();
 unsigned int  System_EnableInterrupts   ();
 unsigned int  System_DisableInterrupts  ();
 void          System_RestoreInterrupts  (unsigned int Status);
+void          System_SetPBDiv           (unsigned int PbDiv);
 
-#define System_DelayMs(ms)	System_DelayUs((ms) * 1000)
+#define System_DelayMs(ms)	   System_DelayUs((ms) * 1000)
 #define System_TimeStart(var)  (var) = _CP0_GET_COUNT()
 #define System_TimeEnd(var)    (var) = (_CP0_GET_COUNT() - (var)) / CORE_US
 #define System_TimeNow()       (_CP0_GET_COUNT() / CORE_US)
