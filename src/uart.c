@@ -110,3 +110,44 @@ void UART_ReadLine(unsigned int Port, unsigned char* Data, unsigned int MaxLengt
 
   *Data = 0;
 }
+
+void UART_SetInterrupt(unsigned int Port, unsigned int Priority, unsigned int SubPriority)
+{
+  UART_EnableInterrupt(Port, DISABLED);
+  
+  switch (Port)
+    {
+    case UART_2:
+      IPC8bits.U2IP = Priority;
+      IPC8bits.U2IS = SubPriority;
+      break;
+    }
+
+  UART_ClearInterrupt(Port);
+  UART_EnableInterrupt(Port, ENABLED);
+}
+
+void UART_EnableInterrupt(unsigned int Port, unsigned int Enabled, unsigned int Mode)
+{
+  switch (Port)
+    {
+    case UART_2:
+      IEC1bits.U2EIE = Enabled;
+      IEC1bits.UETXIE = (Enabled && (Mode & UART_WRITE)) ? 1 : 0;
+      IEC1bits.UERXIE = (Enabled && (Mode & UART_READ)) ? 1 : 0;
+      break;
+    }
+}
+
+void UART_ClearInterrupt(unsigned int Port)
+{
+  switch (Port)
+    {
+    case UART_2:
+      IFS1bits.U2EIF = 0;
+      // TODO: move to separate function
+      IFS1bits.U2TXIF = 0;
+      IFS1bits.U2RXIF = 0;
+      break;
+    }
+}

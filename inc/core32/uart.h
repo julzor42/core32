@@ -80,6 +80,10 @@ void          UART_Write          (unsigned int Port, const unsigned char* Data,
 void          UART_Read           (unsigned int Port, unsigned char* Data, unsigned int Length);
 void          UART_ReadLine       (unsigned int Port, unsigned char* Data, unsigned int MaxLength);
 
+void	      UART_SetInterrupt	  (unsigned int Port, unsigned int Priority, unsigned int SubPriority);
+void	      UART_EnableInterrupt(unsigned int Port, unsigned int Enabled);
+void	      UART_ClearInterrupt (unsigned int Port);
+
 #ifndef UART_CONSOLE_SPEED
 #define UART_CONSOLE_SPEED 115200
 #endif
