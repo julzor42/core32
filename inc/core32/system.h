@@ -48,6 +48,26 @@
 #define PEEK_FUNC(Buffer, Cursor)           unsigned char c = BUFFER_PEEK(Buffer, Cursor); BUFFER_ROUND(Buffer, Cursor); return c
 #define POKE_FUNC(Buffer, Cursor, c)        BUFFER_POKE(Buffer, Cursor, c); BUFFER_ROUND(Buffer, Cursor)
 
+#define RBUFFER_CREATE(Name, Size) volatile unsigned char Name##_Buffer[Size]; \
+  volatile unsigned int Name##_CursorR = 0; \
+  volatile unsigned int Name##_CursorW = 0; \
+  volatile unsigned int Name##_Size = 0
+
+#define EXTERN_RINGBUFFER(Name) extern volatile unsigned char Name##_Buffer[]; \
+  extern volatile unsigned int Name##_CursorR;				\
+  extern volatile unsigned int Name##_CursorW;				\
+  extern volatile unsigned int Name##_Size
+
+#define RBUFFER_MAKE_PEEK(Name) inline unsigned char Peek_##Name() { PEEK_FUNC(Name##_Buffer, Name##_CursorR); Name##_Size--; }
+#define RBUFFER_MAKE_POKE(Name) inline void Poke_##Name(unsigned char c) { POKE_FUNC(Name##_Buffer, Name##_CursorW, c); Name##_Size++; }
+
+#define DECLARE_RINGBUFFER(Name, Size) RBUFFER_CREATE(Name, Size); \
+  RBUFFER_MAKE_PEEK(Name); \
+  RBUFFER_MAKE_POKE(Name)
+
+#define RBUFFER_EMPTY(Name) (Name##_Size == 0)
+#define RBUFFER_FULL(Name)  (Name##_Size == (sizeof(Name##_Buffer) / sizeof(Name##_Buffer[0])))
+
 //
 // Functions
 //

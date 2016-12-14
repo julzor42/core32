@@ -28,7 +28,7 @@
 
 void _mon_putc(char c)
 {
-  while (UxSTA(UART_CONSOLE) & USTA_TXBF);
+  while (UART_IsFull(UART_CONSOLE));
   UxTXREG(UART_CONSOLE) = c;
 }
 
@@ -68,7 +68,7 @@ void UART_Initialize(unsigned int Port, unsigned int Baud, unsigned int RdWr)
 
 void UART_PutChar(unsigned int Port, unsigned char Data)
 {
-  while (UxSTA(Port) & USTA_TXBF);
+  while (UART_IsFull(Port));
   UxTXREG(Port) = Data;
 }
 
@@ -86,7 +86,7 @@ void UART_Write(unsigned int Port, const unsigned char* Data, unsigned int Lengt
 
 unsigned char UART_GetChar(unsigned int Port)
 {
-  while (!(UxSTA(Port) & USTA_URXDA));
+  while (!UART_HasData(Port));
   return UxRXREG(Port);
 }
 
@@ -111,9 +111,11 @@ void UART_ReadLine(unsigned int Port, unsigned char* Data, unsigned int MaxLengt
   *Data = 0;
 }
 
-void UART_SetInterrupt(unsigned int Port, unsigned int Priority, unsigned int SubPriority)
+void UART_SetInterrupt(unsigned int Port, unsigned int Mode, unsigned int Priority, unsigned int SubPriority)
 {
   UART_EnableInterrupt(Port, DISABLED);
+  UART_EnableTXInterrupt(Port, DISABLED);
+  UART_EnableRXInterrupt(Port, DISABLED);
   
   switch (Port)
     {
@@ -124,18 +126,35 @@ void UART_SetInterrupt(unsigned int Port, unsigned int Priority, unsigned int Su
     }
 
   UART_ClearInterrupt(Port);
-  UART_EnableInterrupt(Port, ENABLED);
+  UART_ClearTXInterrupt(Port);
+  UART_ClearRXInterrupt(Port);
+  
+  UART_EnableInterrupt(Port, (Mode != 0) ? 1 : 0);
+  UART_EnableTXInterrupt(Port, (Mode & UART_WRITE) ? 1 : 0);
+  UART_EnableRXInterrupt(Port, (Mode & UART_READ) ? 1 : 0);
 }
 
-void UART_EnableInterrupt(unsigned int Port, unsigned int Enabled, unsigned int Mode)
+void UART_EnableInterrupt(unsigned int Port, unsigned int Enabled)
 {
   switch (Port)
     {
-    case UART_2:
-      IEC1bits.U2EIE = Enabled;
-      IEC1bits.UETXIE = (Enabled && (Mode & UART_WRITE)) ? 1 : 0;
-      IEC1bits.UERXIE = (Enabled && (Mode & UART_READ)) ? 1 : 0;
-      break;
+    case UART_2: IEC1bits.U2EIE = Enabled; break;
+    }
+}
+
+void UART_EnableTXInterrupt(unsigned int Port, unsigned int Enabled)
+{
+  switch (Port)
+    {
+    case UART_2: IEC1bits.U2TXIE = Enabled; break;
+    }
+}
+
+void UART_EnableRXInterrupt(unsigned int Port, unsigned int Enabled)
+{
+  switch (Port)
+    {
+    case UART_2: IEC1bits.U2RXIE = Enabled; break;
     }
 }
 
@@ -143,11 +162,52 @@ void UART_ClearInterrupt(unsigned int Port)
 {
   switch (Port)
     {
-    case UART_2:
-      IFS1bits.U2EIF = 0;
-      // TODO: move to separate function
-      IFS1bits.U2TXIF = 0;
-      IFS1bits.U2RXIF = 0;
-      break;
+    case UART_2: IFS1bits.U2EIF = 0; break;
     }
+}
+
+void UART_ClearTXInterrupt(unsigned int Port)
+{
+  switch (Port)
+    {
+    case UART_2: IFS1bits.U2TXIF = 0; break;
+    }
+}
+
+void UART_ClearRXInterrupt(unsigned int Port)
+{
+  switch (Port)
+    {
+    case UART_2: IFS1bits.U2RXIF = 0; break;
+    }
+}
+
+unsigned int UART_CheckInterrupt(unsigned int Port)
+{
+  switch (Port)
+    {
+    case UART_2: return IFS1bits.U2EIF;
+    }
+
+  return 0;
+}
+
+unsigned int UART_CheckTXInterrupt(unsigned int Port)
+{
+  switch (Port)
+    {
+    case UART_2: return IFS1bits.U2TXIF;
+    }
+
+  return 0;
+}
+
+unsigned int UART_CheckRXInterrupt(unsigned int Port)
+{
+  switch (Port)
+    {
+    case UART_2: return IFS1bits.U2RXIF;
+    }
+
+  return 0;
 }
