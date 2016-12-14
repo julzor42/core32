@@ -21,7 +21,6 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#include <p32xxxx.h>
 #include <core32.h>
 
 #ifdef USE_BASECONF

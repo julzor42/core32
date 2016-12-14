@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _CORE32_H_
-#define _CORE32_H_
+#pragma once
 
 //
 // System headers
@@ -68,5 +67,5 @@
 #include <core32/dma.h>
 #include <core32/extint.h>
 #include <core32/cn.h>
+#include <core32/ring.h>
 
-#endif /* _CORE32_H_ */

@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _OC_H_
-#define _OC_H_
+#pragma once
 
 #define BASEADDRESS_OC      0xBF803000
 #define OCxCON_BASE(x)      _SFR_ADDR(BASEADDRESS_OC, 0x200, x)
@@ -48,5 +47,3 @@ void    PWM_Initialize      (unsigned int Pin, unsigned int Timer, unsigned shor
 #define OC_3      2
 #define OC_4      3
 #define OC_5      4
-
-#endif /* _OC_H_ */

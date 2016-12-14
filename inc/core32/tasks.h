@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _TASK_H_
-#define _TASK_H_
+#pragma once
 
 //
 // Task handler type
@@ -109,5 +108,3 @@ void        Task_Exit               (Task_t* pTask, TaskHandler Replace);
 
 #define     Task_AllowSleep(t, i)   t->CanSleep = (i)
 #define     Task_AllowIdle(t, i)    t->CanIdle  = (i)
-
-#endif /* _TASK_H_ */

@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _DMA_H_
-#define _DMA_H_
+#pragma once
 
 #define   BASEADDRESS_DMA    0xBF883060
 #define   DCHxCON_BASE(x)    _SFR_ADDR(BASEADDRESS_DMA, 0xC0, x)
@@ -77,6 +76,3 @@
 
 void      DMA_InitializeChannel       (unsigned int Channel, unsigned int Priority, unsigned int AutoRestart);
 void      DMA_SetStartInterrupt       (unsigned int Channel, unsigned int Interrupt);
-
-
-#endif /* _DMA_H_ */

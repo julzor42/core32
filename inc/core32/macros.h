@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _MACROS_H_
-#define _MACROS_H_
+#pragma once
 
 #define _Khz        * 1000L
 #define _Mhz        * 1000000L
@@ -80,5 +79,3 @@
 
 #define POLARITY_RISE 1
 #define POLARITY_FALL 0
-
-#endif /* _MACROS_H_ */

@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _NVM_H
-#define _NVM_H_
+#pragma once
 
 #define PAGE_SIZE               1024            // # of 32-bit Instructions per Page
 #define BYTE_PAGE_SIZE          (4 * PAGE_SIZE) // Page size in Bytes
@@ -44,5 +43,3 @@ unsigned int                              NVM_ErasePage     (void* Address);
 unsigned int                              NVM_WriteWord     (void* Address, unsigned int Data);
 unsigned int                              NVM_WriteRow      (void* Address, void* Data);
 unsigned int                              NVM_ClearError    ();
-
-#endif /* _NVM_H_ */

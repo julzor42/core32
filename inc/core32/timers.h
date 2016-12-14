@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _TIMERS_H_
-#define _TIMERS_H_
+#pragma once
 
 #define BASEADDRESS_TIMER   0xBF800600
 #define TxCON_BASE(x)       _SFR_ADDR(BASEADDRESS_TIMER, 0x200, x)
@@ -78,5 +77,3 @@ void    Timer_Wait          (unsigned int Timer, unsigned int Cycles);
 void    Timer_SetInterrupt  (unsigned int Timer, unsigned int Enabled, unsigned int Priority, unsigned int SubPriority);
 void    Timer_EnableInterrupt(unsigned int Timer, unsigned int Enabled);
 void    Timer_ClearInterrupt(unsigned int Timer);
-
-#endif /* _TIMERS_H_ */

@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _ADC_H_
-#define _ADC_H_
+#pragma once
 
 #define       ADC_Enable()            AD1CONbits.ON = 1
 #define       ADC_Disable()           AD1CONbits.ON = 0
@@ -33,5 +32,3 @@
 
 void          ADC_Initialize          ();
 unsigned int  ADC_Read                ();
-
-#endif /* _ADC_H_ */

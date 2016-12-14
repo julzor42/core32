@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _SPI_H_
-#define _SPI_H_
+#pragma once
 
 #define BASEADDRESS_SPI     0xBF805800
 #define SPIxCON_BASE(x)     _SFR_ADDR(BASEADDRESS_SPI, 0x200, x)
@@ -61,5 +60,3 @@ void            SPI_Initialize      (unsigned int Port, unsigned int Freq, unsig
 unsigned int    SPI_Data            (unsigned int Port, unsigned int Data);
 void            SPI_Buffer          (unsigned int Port, unsigned char* pSend, unsigned char* pRecv, unsigned int Length);
 void            SPI_Print           (unsigned int Port, unsigned char* Message);
-
-#endif /* _SPI_H_ */

@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _SYSTEM_H_
-#define _SYSTEM_H_
+#pragma once
 
 //
 // Macros
@@ -38,35 +37,6 @@
 #define _SFR_INV(addr)         _SFR((addr) + 0x0c)
 #define _SFR_ADDR(addr, sz, n) ((addr) + ((sz) * (n)))
 #define _SFR_TYPE(type, addr)  ((volatile type*)(addr))
-
-//
-// Tools
-//
-#define BUFFER_PEEK(Buffer, Cursor)         Buffer[Cursor++]
-#define BUFFER_POKE(Buffer, Cursor, Data)   Buffer[Cursor++] = Data
-#define BUFFER_ROUND(Buffer, Cursor)        if (Cursor >= sizeof(Buffer)) Cursor = 0
-#define PEEK_FUNC(Buffer, Cursor)           unsigned char c = BUFFER_PEEK(Buffer, Cursor); BUFFER_ROUND(Buffer, Cursor); return c
-#define POKE_FUNC(Buffer, Cursor, c)        BUFFER_POKE(Buffer, Cursor, c); BUFFER_ROUND(Buffer, Cursor)
-
-#define RBUFFER_CREATE(Name, Size) volatile unsigned char Name##_Buffer[Size]; \
-  volatile unsigned int Name##_CursorR = 0; \
-  volatile unsigned int Name##_CursorW = 0; \
-  volatile unsigned int Name##_Size = 0
-
-#define EXTERN_RINGBUFFER(Name) extern volatile unsigned char Name##_Buffer[]; \
-  extern volatile unsigned int Name##_CursorR;				\
-  extern volatile unsigned int Name##_CursorW;				\
-  extern volatile unsigned int Name##_Size
-
-#define RBUFFER_MAKE_PEEK(Name) inline unsigned char Peek_##Name() { PEEK_FUNC(Name##_Buffer, Name##_CursorR); Name##_Size--; }
-#define RBUFFER_MAKE_POKE(Name) inline void Poke_##Name(unsigned char c) { POKE_FUNC(Name##_Buffer, Name##_CursorW, c); Name##_Size++; }
-
-#define DECLARE_RINGBUFFER(Name, Size) RBUFFER_CREATE(Name, Size); \
-  RBUFFER_MAKE_PEEK(Name); \
-  RBUFFER_MAKE_POKE(Name)
-
-#define RBUFFER_EMPTY(Name) (Name##_Size == 0)
-#define RBUFFER_FULL(Name)  (Name##_Size == (sizeof(Name##_Buffer) / sizeof(Name##_Buffer[0])))
 
 //
 // Functions
@@ -85,9 +55,7 @@ unsigned int  System_DisableInterrupts  ();
 void          System_RestoreInterrupts  (unsigned int Status);
 void          System_SetPBDiv           (unsigned int PbDiv);
 
-#define System_DelayMs(ms)	   System_DelayUs((ms) * 1000)
-#define System_TimeStart(var)  (var) = _CP0_GET_COUNT()
-#define System_TimeEnd(var)    (var) = (_CP0_GET_COUNT() - (var)) / CORE_US
-#define System_TimeNow()       (_CP0_GET_COUNT() / CORE_US)
-
-#endif /* _SYSTEM_H_ */
+#define       System_DelayMs(ms)	   System_DelayUs((ms) * 1000)
+#define       System_TimeStart(var)  (var) = _CP0_GET_COUNT()
+#define       System_TimeEnd(var)    (var) = (_CP0_GET_COUNT() - (var)) / CORE_US
+#define       System_TimeNow()       (_CP0_GET_COUNT() / CORE_US)

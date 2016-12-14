@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _I2C_H_
-#define _I2C_H_
+#pragma once
 
 #define BASEADDRESS_I2C     0xBF805000
 #define I2CxCON_BASE(x)     _SFR_ADDR(BASEADDRESS_I2C, 0x100, x)
@@ -105,5 +104,3 @@ void          I2C_Stop                (unsigned int Port);
 void          I2C_Ack                 (unsigned int Port);
 void          I2C_NAck                (unsigned int Port);
 void          I2C_Idle                (unsigned int Port);
-
-#endif /* _UART_H_ */

@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _GPIO_H_
-#define _GPIO_H_
+#pragma once
 
 #ifdef PIC32MX2
 #define BASEADDRESS_GPIO    0xBF886010
@@ -92,5 +91,3 @@ typedef struct              Port_s
 #define GPIO_CheckBits(p, b)   (GPIO_GetBits(p, b) == (b))
 #define GPIO_ClearBits(p, b)   p->LATCLR = (b)
 #define GPIO_ToggleBits(p, b)  p->LATINV = (b)
-
-#endif /* _GPIO_H_ */

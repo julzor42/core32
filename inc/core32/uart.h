@@ -21,8 +21,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifndef _UART_H_
-#define _UART_H_
+#pragma once
 
 #define BASEADDRESS_UART    0xBF806000
 #define UxMODE_BASE(x)      _SFR_ADDR(BASEADDRESS_UART, 0x200, x)
@@ -99,4 +98,3 @@ unsigned int  UART_CheckRXInterrupt(unsigned int Port);
 #define UART_CONSOLE_SPEED 115200
 #endif
 
-#endif /* _UART_H_ */
