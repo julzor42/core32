@@ -22,6 +22,17 @@
   SOFTWARE.
 */
 #pragma once
+#include <setjmp.h>
+
+#define TASK_ENV_SIZE 24
+
+
+
+#define Task_Yield(task) {   \
+  task->Yielding = 1;           \
+  if (setjmp(task->Env) == 0)   \
+  return;                       \
+} while (0)
 
 //
 // Task handler type
@@ -36,13 +47,16 @@ typedef struct Task_s
     TaskHandler  Replace;
     void*        Data;
     unsigned int Events;
+    long long    Env[TASK_ENV_SIZE];
 
     union
     {
       struct // Flags
       {
-	      int CanSleep:1;
-        int CanIdle:1;
+	      int CanSleep  :1;
+        int CanIdle   :1;
+        int Yielding  :1;
+        int Yielded   :1;
       };
       unsigned int Flags;
     };

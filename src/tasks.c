@@ -76,13 +76,24 @@ __attribute__((weak)) void Task_OnSleepExit() { }
 __attribute__((weak)) void Task_OnIdleEnter() { }
 __attribute__((weak)) void Task_OnIdleExit() { }
 
+void Task_RestoreEnv(Task_t* pTask)
+{
+  pTask->Yielded = 0;
+  if (pTask->Yielding)
+  {
+    pTask->Yielding = 0;
+    pTask->Yielded = 1;
+    longjmp(pTask->Env, 1);
+  }
+}
+
 void Task_ProcessAll()
 {
-  unsigned int nTask;
-  Task_t*    pTask;
+  static unsigned int nTask;
+  static Task_t*    pTask;
 
-  unsigned int AllowIdle  = 1;
-  unsigned int AllowSleep = 1;
+  static unsigned int AllowIdle  = 1;
+  static unsigned int AllowSleep = 1;
   
   for (nTask = 0; nTask < TASK_MAX; nTask++)
   {
@@ -90,8 +101,11 @@ void Task_ProcessAll()
     if (pTask->Handler != 0)
     {
       Task_Process(pTask);
-      g_Tasks[nTask].Handler(pTask);
-      
+      Task_RestoreEnv(pTask);
+
+      if (!pTask->Yielded)     
+        g_Tasks[nTask].Handler(pTask);
+
       if (pTask->State == TASK_START)   pTask->State   = TASK_IDLE;
       if (pTask->State == TASK_EXIT)  
       {
@@ -164,12 +178,4 @@ void Task_WaitValue(Task_t* pTask, unsigned int* pAddress, unsigned int Value, u
   pTask->State          = TASK_WAITVAL;
   pTask->WaitAddress    = pAddress;
   pTask->WaitMask       = Value;  
-}
-
-void Task_Yield()
-{
-  // TODO:
-  // store current position in task
-  // return from task
-  // next task entry will resume at the same position
 }
