@@ -24,16 +24,6 @@
 #pragma once
 #include <setjmp.h>
 
-#define TASK_ENV_SIZE 24
-
-
-
-#define Task_Yield(task) {   \
-  task->Yielding = 1;           \
-  if (setjmp(task->Env) == 0)   \
-  return;                       \
-} while (0)
-
 //
 // Task handler type
 //
@@ -42,12 +32,12 @@ typedef void (*TaskHandler)(struct Task_s*);
 
 typedef struct Task_s
 {
+    unsigned int Id;
     unsigned int State;
     TaskHandler  Handler;
     TaskHandler  Replace;
     void*        Data;
     unsigned int Events;
-    long long    Env[TASK_ENV_SIZE];
 
     union
     {
@@ -55,8 +45,6 @@ typedef struct Task_s
       {
 	      int CanSleep  :1;
         int CanIdle   :1;
-        int Yielding  :1;
-        int Yielded   :1;
       };
       unsigned int Flags;
     };
