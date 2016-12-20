@@ -8,10 +8,13 @@ CXX=xc32-g++
 LD=xc32-ld
 BIN2HEX=xc32-bin2hex
 
-CFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -Wall -MMD
-LDFLAGS += -mprocessor=$(PROC)
+CFLAGS +=   -mprocessor=$(PROC) -I$(CORE32INC) -Wall -MMD
+CXXFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -Wall -MMD
+LDFLAGS +=  -mprocessor=$(PROC)
 
-OBJ += $(patsubst %.c,%.o,$(SRC)) $(CORE32OBJ)
+OBJC=$(patsubst %.c,%.o,$(SRC))
+OBJC2=$(patsubst %.cpp,%.o,$(OBJC))
+OBJ += $(OBJC2) $(CORE32OBJ)
 
 DFILES = $(patsubst %.o,%.d,$(OBJ))
 
@@ -34,3 +37,5 @@ disas:
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<

@@ -54,6 +54,8 @@ typedef struct              Port_s
   unsigned int              ODCINV;
 }                           Port_t;
 
+typedef volatile Port_t*    VPort;
+
 #define PortA               PORT(0)
 #define PortB               PORT(1)
 #define PortC               PORT(2)

@@ -29,6 +29,7 @@
 #include <p32xxxx.h>
 #include <sys/kmem.h>
 #include <sys/attribs.h>
+#include <stdint.h>
 
 #include <core32/macros.h>
 
