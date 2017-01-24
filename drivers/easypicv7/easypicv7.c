@@ -25,7 +25,7 @@
 #include "easypicv7.h"
 #include "core32conf.h"
 
-void EPF7_Startup()
+void Board_Startup()
 {
   System_Initialize();
   

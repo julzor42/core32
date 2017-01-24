@@ -21,32 +21,32 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#include <core32.h>
+#ifndef _EXPLORER1632_H_
+#define _EXPLORER1632_H_
 
-#ifndef CORE32_NO_MAIN
-// Prototypes
-void Program(Task_t*);
+#define BOARD_NAME    "Explorer 16/32"
+#define BOARD_EX1632
 
-int main()
-{
-#ifdef BOARD_NAME
+#define CS1_TRIS      _TRISG9
+#define CS2_TRIS      _TRISD9
 
-  System_Initialize();
+#define CS1_ENABLE()  _LATG9 = 0
+#define CS1_DISABLE() _LATG9 = 1
 
-  #ifdef UART_CONSOLE
-  UART_Initialize(UART_CONSOLE, UART_CONSOLE_SPEED, UART_READWRITE);
-  #endif
+#define CS2_ENABLE()  _LATD9 = 0
+#define CS2_DISABLE() _LATD9 = 1
 
-#else
+#define EX1632_SPI_A  SPI_2
+#define EX1632_SPI_B  SPI_1
 
-  Board_Startup();
+#define EX1632_UART_A UART_1
+#define EX1632_UART_B UART_2
 
-#endif
+#define EX1632_RST_A      _LATF3
+#define EX1632_RST_B      _LATE9
+#define EX1632_RST_A_TRIS _TRISF3
+#define EX1632_RST_B_TRIS _TRISE9
 
-  Task_Initialize();
-  Task_Create(Program, NULL);
-  Task_Loop();
-	
-  return 0;
-}
-#endif
+void    Board_Startup();
+
+#endif /* _EXPLORER1632_H_ */

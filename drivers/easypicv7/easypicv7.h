@@ -24,6 +24,9 @@
 #ifndef _EASYPICV7_H_
 #define _EASYPICV7_H_
 
+#define BOARD_NAME    "EasyPIC Fusion v7"
+#define BOARD_EPF7
+
 #define CS1_TRIS      _TRISC2
 #define CS2_TRIS      _TRISC4
 
@@ -35,6 +38,6 @@
 
 #define EPF7_SPI       SPI_3
 
-void    EPF7_Startup();
+void    Board_Startup();
 
 #endif /* _EASYPICV7_H_ */

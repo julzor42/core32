@@ -2,14 +2,15 @@ CORE32SRC=$(wildcard $(CORE32PATH)/src/*.c)
 CORE32SRC += $(wildcard $(CORE32PATH)/tasks/*.c)
 CORE32OBJ=$(patsubst %.c,%.o,$(CORE32SRC))
 CORE32INC=$(CORE32PATH)/inc
+CORE32DRV=$(CORE32PATH)/drivers
 
 CC=xc32-gcc
 CXX=xc32-g++
 LD=xc32-ld
 BIN2HEX=xc32-bin2hex
 
-CFLAGS +=   -mprocessor=$(PROC) -I$(CORE32INC) -Wall -MMD
-CXXFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -Wall -MMD
+CFLAGS +=   -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) -Wall -MMD
+CXXFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) -Wall -MMD
 LDFLAGS +=  -mprocessor=$(PROC)
 
 OBJC=$(patsubst %.c,%.o,$(SRC))

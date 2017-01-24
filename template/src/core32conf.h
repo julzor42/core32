@@ -27,6 +27,11 @@
 //
 // This file is used to configure the core32 framework features
 
+
+// Include one of the required board header
+//#include <explorer1632/explorer1632.h>
+//#include <easypicv7/easypicv7.h>
+
 //
 // Frequencies
 //

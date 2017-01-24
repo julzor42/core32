@@ -22,31 +22,27 @@
   SOFTWARE.
 */
 #include <core32.h>
+#include "explorer1632.h"
+#include "core32conf.h"
 
-#ifndef CORE32_NO_MAIN
-// Prototypes
-void Program(Task_t*);
-
-int main()
+void Board_Startup()
 {
-#ifdef BOARD_NAME
-
   System_Initialize();
-
-  #ifdef UART_CONSOLE
-  UART_Initialize(UART_CONSOLE, UART_CONSOLE_SPEED, UART_READWRITE);
-  #endif
-
-#else
-
-  Board_Startup();
-
+  
+#ifdef EX1632_USE_CONSOLE_RW
+  UART_Initialize(UART_CONSOLE, 115200, UART_READ | UART_WRITE);
+#elif  EX1632_USE_CONSOLE_WO
+  UART_Initialize(UART_CONSOLE, 115200, UART_WRITE);
+#elif  EX1632_USE_CONSOLE_RO
+  UART_Initialize(UART_CONSOLE, 115200, UART_READ);
 #endif
 
-  Task_Initialize();
-  Task_Create(Program, NULL);
-  Task_Loop();
-	
-  return 0;
+#ifdef EX1632_USE_SPI
+  CS1_DISABLE();
+  CS2_DISABLE();
+  
+  CS1_TRIS = 0;
+  CS2_TRIS = 0;
+#endif
+  
 }
-#endif
