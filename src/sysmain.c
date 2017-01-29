@@ -29,7 +29,7 @@ void Program(Task_t*);
 
 int main()
 {
-#ifdef BOARD_NAME
+#ifndef BOARD_NAME
 
   System_Initialize();
 
