@@ -23,11 +23,15 @@
 */
 #include <core32.h>
 
-#ifndef CORE32_NO_MAIN
 // Prototypes
 void Program(Task_t*);
 
-int main()
+void __attribute__((weak)) Program(Task_t* task)
+{
+
+}
+
+int __attribute__((weak)) main()
 {
 #ifndef BOARD_NAME
 
@@ -49,4 +53,3 @@ int main()
 	
   return 0;
 }
-#endif
