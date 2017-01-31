@@ -24,32 +24,28 @@
 #include <core32.h>
 
 // Prototypes
-void Program(Task_t*);
-
-void __attribute__((weak)) Program(Task_t* task)
-{
-
-}
+void __attribute__((weak)) Program(Task_t*);
+void __attribute__((weak)) Board_Startup();
 
 int __attribute__((weak)) main()
 {
-#ifndef BOARD_NAME
+  if (Board_Startup)
+  {
+    Board_Startup();
+  }
+  else
+  {
+    System_Initialize();
 
-  System_Initialize();
-
-  #ifdef UART_CONSOLE
-  UART_Initialize(UART_CONSOLE, UART_CONSOLE_SPEED, UART_READWRITE);
-  #endif
-
-#else
-
-  Board_Startup();
-
-#endif
+    #ifdef UART_CONSOLE
+    UART_Initialize(UART_CONSOLE, UART_CONSOLE_SPEED, UART_READWRITE);
+    #endif
+  }
 
   Task_Initialize();
-  Task_Create(Program, NULL);
+  if (Program)
+    Task_Create(Program, NULL);
   Task_Loop();
-	
+
   return 0;
 }
