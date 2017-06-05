@@ -1,3 +1,6 @@
+
+#include "gpio.h"
+
 /*
   MIT License
 
@@ -24,49 +27,15 @@
 #pragma once
 
 //
-// System headers
+// Leds
 //
-#include <p32xxxx.h>
-#include <sys/kmem.h>
-#include <sys/attribs.h>
-#include <stdint.h>
-
-#include <core32/macros.h>
-
-// User configuration file
-#include <core32conf.h>
-
-#include <core32/system.h>
+#define HW_LED_INIT(led)    do { GPIO_SetOutput(led); GPIO_ClearBits(led); } while (0)
+#define HW_LED_ON(led)      GPIO_SetBits(led)
+#define HW_LED_OFF(led)     GPIO_ClearBits(led)
+#define HW_LED_TOGGLE(led)  GPIO_ToggleBits(led)
 
 //
-// Macros
+// Push buttons
 //
-#define CORE_US     (SYSTEM_FREQ / 2000000)
-
-#if SYSTEM_PBDIV == 1
-  // From datasheet: When using the 1:1 PBCLK divisor,
-  // the software should not read/write the peripheral SFR
-  // in the SYSCLK cycle immediatly following the instruction
-  // that clears the module's ON bit
-# define PBDIV1_CYCLE_WAIT()    _nop()
-#else
-# define PBDIV1_CYCLE_WAIT()
-#endif
-
-//
-// Features
-//
-#include <core32/tasks.h>
-#include <core32/timers.h>
-#include <core32/gpio.h>
-#include <core32/oc.h>
-#include <core32/uart.h>
-#include <core32/spi.h>
-#include <core32/i2c.h>
-#include <core32/nvm.h>
-#include <core32/adc.h>
-#include <core32/dma.h>
-#include <core32/extint.h>
-#include <core32/cn.h>
-#include <core32/ring.h>
-#include <core32/commhw.h>
+#define HW_BTN_INIT(btn)    GPIO_SetInput(btn)
+#define HW_BTN_ISSET(btn)   GPIO_GetBits(btn)
