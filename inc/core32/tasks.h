@@ -32,32 +32,44 @@ typedef void (*TaskHandler)(struct Task_s*);
 
 typedef struct Task_s
 {
+    // Task Id
     unsigned int Id;
+
+    // Current state
     unsigned int State;
+
+    // Handler
     TaskHandler  Handler;
+
+    // New handler which will replace Handler
     TaskHandler  Replace;
+
+    // User defined data
     void*        Data;
+
+    // Task events
     unsigned int Events;
 
     union
     {
       struct // Flags
       {
-	      int CanSleep  :1;
-        int CanIdle   :1;
+        int CanSleep  :1;   // Device is allowed to enter Sleep mode
+        int CanIdle   :1;   // Device is allowed to enter Idle mode
       };
       unsigned int Flags;
     };
   
+    // Fields related to internal states
     union
     {
-      struct // Delay
+      struct // Used by TASK_DELAY
       {
         unsigned int DelayNextState;
         unsigned int DelayStart;
         unsigned int Delay;
       };
-      struct // Wait address
+      struct // Used by TASK_WAITVAL and TASK_WAITMASK
       {
         unsigned int           WaitNextState;
         volatile unsigned int* WaitAddress;
@@ -103,6 +115,9 @@ void        Task_Exit               (Task_t* pTask, TaskHandler Replace);
 #define     Task_SetData(t, obj)    t->Data = (obj)
 
 #define     Task_Sleep(t, delay)    Task_SetDelay(t, delay, TASK_AUTO)
+
+#define     Task_SetDelayMs(task, delay, NextState) Task_SetDelay(task, (delay) * 1000, NextState)
+#define     Task_SleepMs(t, delay)  Task_SetDelayMs(task, delay, TASK_AUTO)
 
 #define     Task_WaitEvent(t, i, n) Task_WaitMask(t, &task->Events, 1 << (i))
 #define     Task_SetEvent(t, i)     t->Events |= 1 << (i)

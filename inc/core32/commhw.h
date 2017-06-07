@@ -1,6 +1,3 @@
-
-#include "gpio.h"
-
 /*
   MIT License
 
@@ -25,6 +22,8 @@
   SOFTWARE.
 */
 #pragma once
+
+#include "gpio.h"
 
 //
 // Leds

@@ -36,7 +36,7 @@ void Timer_Initialize(unsigned int Timer, unsigned int Prescaler, unsigned short
       case 1:   break;
       case 8:   TxCONSET(Timer) = 1 << 4; break;
       case 64:  TxCONSET(Timer) = 2 << 4; break;
-      case 256: TxCONSET(Timer) = 3 << 4; break;        
+      case 256: TxCONSET(Timer) = 3 << 4; break;
     }
   }
   else
@@ -46,11 +46,11 @@ void Timer_Initialize(unsigned int Timer, unsigned int Prescaler, unsigned short
       case 1:   break;
       case 2:   TxCONSET(Timer) = 1 << 4; break;
       case 4:   TxCONSET(Timer) = 2 << 4; break;
-      case 8:   TxCONSET(Timer) = 3 << 4; break;              
+      case 8:   TxCONSET(Timer) = 3 << 4; break;
       case 16:  TxCONSET(Timer) = 4 << 4; break;
       case 32:  TxCONSET(Timer) = 5 << 4; break;
-      case 64:  TxCONSET(Timer) = 6 << 4; break;        
-      case 256: TxCONSET(Timer) = 7 << 4; break;        
+      case 64:  TxCONSET(Timer) = 6 << 4; break;
+      case 256: TxCONSET(Timer) = 7 << 4; break;
     }
   }
   

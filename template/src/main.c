@@ -1,15 +1,5 @@
 #include <core32.h>
 
-//
-// Configuration bits
-//
-#pragma config POSCMOD 	= XT
-#pragma config FNOSC   	= PRIPLL
-#pragma config FPLLIDIV = DIV_2
-#pragma config FPLLMUL  = MUL_20
-#pragma config FPLLODIV = DIV_1
-#pragma config FPBDIV   = 2
-
 void Program(Task_t* task)
 {
     Task_Switch(task)
@@ -24,7 +14,7 @@ void Program(Task_t* task)
       case TASK_IDLE:
       {
         GPIO_ToggleBits(PortA, PINS_ALL);
-        Task_Sleep(task, 1000000);
+        Task_SleepMs(task, 1000);
       }
       break;
     }
