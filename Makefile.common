@@ -4,6 +4,12 @@ CORE32OBJ=$(patsubst %.c,%.o,$(CORE32SRC))
 CORE32INC=$(CORE32PATH)/inc
 CORE32DRV=$(CORE32PATH)/drivers
 
+ifeq ($(MPLABPATH),)
+MPLABPATH := /opt/microchip/mplabx/v5.05
+endif
+
+IPECMD=sudo java -jar $(MPLABPATH)/mplab_platform/mplab_ipe/ipecmd.jar
+
 CC=xc32-gcc
 CXX=xc32-g++
 LD=xc32-ld
@@ -40,3 +46,9 @@ disas:
 	$(CC) $(CFLAGS) -o $@ -c $<
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+program:
+	$(IPECMD) -TP$(PROGRAMMER) -P$(PROC) -M -F"./$(NAME).hex" -OL
+
+program-clean:
+	rm MPLABXLog.* log.*
