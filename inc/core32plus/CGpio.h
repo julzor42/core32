@@ -9,11 +9,11 @@ namespace Core32
     CGpio(VPort port) : m_port(port)
     {
     }
-    
+
     ~CGpio()
-      {
-      }
-    
+    {
+    }
+
     void SetInput(uint32_t bits)
     {
       GPIO_SetInput(m_port, bits);

@@ -38,6 +38,9 @@
 
 #define EPF7_SPI       SPI_3
 
+#define EPF7_UART_A    UART_2
+#define EPF7_UART_B    UART_5
+
 void    Board_Startup();
 
 #endif /* _EASYPICV7_H_ */

@@ -30,9 +30,12 @@
 
 extern unsigned char    TFT_BackBuffer[];
 
-void                    TFT_Initialize  (unsigned int SysFreq);
+void                    TFT_Initialize  ();
 void                    TFT_Clear       (unsigned char Color);
 void                    TFT_Flip        ();
+void                    TFT_SetAddress  (unsigned short x, unsigned short y);
+void                    TFT_RawByte     (unsigned char byte);
+void                    TFT_RawShortRev (unsigned short data);
 
 #define TFT_Plot(x, y, Color)           TFT_BackBuffer[x + y * TFT_WIDTH] = Color
 
@@ -47,5 +50,8 @@ void                    TFT_Flip        ();
 #define TFT_RS_TRIS     _TRISD9
 #define TFT_CS_TRIS     _TRISD10
 #define TFT_RST_TRIS    _TRISD7
+
+#define TFT_Begin()     TFT_CS = 0
+#define TFT_End()       TFT_CS = 1
 
 #endif /* _ILI9341_H_ */

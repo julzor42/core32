@@ -66,37 +66,37 @@ void UART_Initialize(unsigned int Port, unsigned int Baud, unsigned int RdWr)
   UART_Enable(Port);
 }
 
-void UART_PutChar(unsigned int Port, unsigned char Data)
+void UART_PutChar(unsigned int Port, char Data)
 {
   while (UART_IsFull(Port));
   UxTXREG(Port) = Data;
 }
 
-void UART_PutString(unsigned int Port, const unsigned char* Data)
+void UART_PutString(unsigned int Port, const char* Data)
 {
   while (*Data)
     UART_PutChar(Port, *Data++);
 }
 
-void UART_Write(unsigned int Port, const unsigned char* Data, unsigned int Length)
+void UART_Write(unsigned int Port, const char* Data, unsigned int Length)
 {
   while (--Length)
     UART_PutChar(Port, *Data++);
 }
 
-unsigned char UART_GetChar(unsigned int Port)
+char UART_GetChar(unsigned int Port)
 {
   while (!UART_HasData(Port));
   return UxRXREG(Port);
 }
 
-void UART_Read(unsigned int Port, unsigned char* Data, unsigned int Length)
+void UART_Read(unsigned int Port, char* Data, unsigned int Length)
 {
   while (--Length)
     (*Data++) = UART_GetChar(Port);
 }
 
-void UART_ReadLine(unsigned int Port, unsigned char* Data, unsigned int MaxLength)
+void UART_ReadLine(unsigned int Port, char* Data, unsigned int MaxLength)
 {
   while (--MaxLength > 0)
   {

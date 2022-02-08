@@ -22,6 +22,7 @@
   SOFTWARE.
 */
 #include <p32xxxx.h>
+#include <core32conf.h>
 #include <il9341/il9341.h>
 
 unsigned char TFT_BackBuffer[320*240];
@@ -29,23 +30,23 @@ unsigned char TFT_BackBuffer[320*240];
 void TFT_RawShort    (unsigned short data)   { PMDIN = data >> 8; Nop(); Nop(); PMDIN = data; Nop(); Nop(); }
 void TFT_RawByte     (unsigned char byte)    { PMDIN = byte; Nop(); Nop(); }
 void TFT_RawShortRev (unsigned short data)   { PMDIN = data; Nop(); PMDIN = data >> 8; }
-void TFT_SendCommand (unsigned int index)    { TFT_CS = 0; TFT_RS = 0; TFT_RawByte(index); TFT_CS = 1; TFT_RS = 1; }
+void TFT_SendCommand (unsigned int index)    { TFT_Begin(); TFT_RS = 0; TFT_RawByte(index); TFT_End(); TFT_RS = 1; }
 
-void SetAddress(unsigned short x, unsigned short y)
+void TFT_SetAddress(unsigned short x, unsigned short y)
 {
     TFT_SendCommand(0x2a);
-    TFT_CS = 0;
+    TFT_Begin();
     TFT_RawShort(x);
     TFT_RawByte(0x01);
     TFT_RawByte(0xdf);
-    TFT_CS = 1;
+    TFT_End();
     
     TFT_SendCommand(0x2b); 
-    TFT_CS = 0;
+    TFT_Begin();
     TFT_RawShort(y);
     TFT_RawByte(0x01);
     TFT_RawByte(0x3f);
-    TFT_CS = 1;
+    TFT_End();
     
     TFT_SendCommand(0x2c);
 }
@@ -54,30 +55,30 @@ void TFT_WriteReg1(unsigned char index, unsigned char value)
 {
     TFT_SendCommand(index);
     
-    TFT_CS = 0;
+    TFT_Begin();
     TFT_RawByte(value);
-    TFT_CS = 1;
+    TFT_End();
 }
 
 void TFT_WriteReg2(unsigned char index, unsigned char value1, unsigned char value2)
 {
     TFT_SendCommand(index);
     
-    TFT_CS = 0;
+    TFT_Begin();
     TFT_RawByte(value1);
     TFT_RawByte(value2);
-    TFT_CS = 1;
+    TFT_End();
 }
 
 void TFT_WriteReg3(unsigned char index, unsigned char value1, unsigned char value2, unsigned char value3)
 {
     TFT_SendCommand(index);
     
-    TFT_CS = 0;
+    TFT_Begin();
     TFT_RawByte(value1);
     TFT_RawByte(value2);
     TFT_RawByte(value3);
-    TFT_CS = 1;
+    TFT_End();
 }
 
 
@@ -87,7 +88,7 @@ void TFT_DelayMs(unsigned int SysFreq, unsigned int time)
     while (_CP0_GET_COUNT() < (SysFreq / 2000) * time);
 }
 
-void TFT_Initialize(unsigned int SysFreq)
+void TFT_Initialize()
 {
     TFT_RD_TRIS         = 0;
     TFT_WR_TRIS         = 0;
@@ -107,9 +108,9 @@ void TFT_Initialize(unsigned int SysFreq)
     PMCONbits.PMPEN     = 1;
     
     // Reset phase
-    TFT_RST = 1; TFT_DelayMs(SysFreq, 100);
-    TFT_RST = 0; TFT_DelayMs(SysFreq, 100);
-    TFT_RST = 1; TFT_DelayMs(SysFreq, 100);
+    TFT_RST = 1; TFT_DelayMs(SYSTEM_FREQ, 100);
+    TFT_RST = 0; TFT_DelayMs(SYSTEM_FREQ, 100);
+    TFT_RST = 1; TFT_DelayMs(SYSTEM_FREQ, 100);
 
     TFT_WriteReg1(0x36, 0x69);	// Memory access control
     TFT_WriteReg1(0x3A, 0x05);  // Pixel Format (16 BPP)
@@ -119,7 +120,7 @@ void TFT_Initialize(unsigned int SysFreq)
     
     // Get out of sleep
     TFT_SendCommand(0x11);
-    TFT_DelayMs(SysFreq, 100);
+    TFT_DelayMs(SYSTEM_FREQ, 100);
     
     // Display ON
     TFT_SendCommand(0x29);
@@ -130,9 +131,9 @@ void TFT_Flip()
     unsigned char* pData;
     unsigned char* pEnd;
         
-    SetAddress(0, 0);
+    TFT_SetAddress(0, 0);
 
-    TFT_CS = 0;
+    TFT_Begin();
     
     pData = (unsigned char*)&TFT_BackBuffer;
     pEnd  = pData + TFT_PIXELS;
@@ -143,7 +144,7 @@ void TFT_Flip()
         TFT_RawShortRev(color);
     }
     
-    TFT_CS = 1; 
+    TFT_End();
 }
 
 void TFT_Clear(unsigned char Color)

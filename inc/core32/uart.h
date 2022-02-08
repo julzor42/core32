@@ -72,29 +72,37 @@
 //
 // Functions
 //
-void          UART_Initialize     (unsigned int Port, unsigned int Baud, unsigned int RdWr);
-void          UART_PutChar        (unsigned int Port, unsigned char Data);
-void          UART_PutString      (unsigned int Port, const unsigned char* Data);
-unsigned char UART_GetChar        (unsigned int Port);
-void          UART_Write          (unsigned int Port, const unsigned char* Data, unsigned int Length);
-void          UART_Read           (unsigned int Port, unsigned char* Data, unsigned int Length);
-void          UART_ReadLine       (unsigned int Port, unsigned char* Data, unsigned int MaxLength);
+void          UART_Initialize       (unsigned int Port, unsigned int Baud, unsigned int RdWr);
+void          UART_PutChar          (unsigned int Port, char Data);
+void          UART_PutString        (unsigned int Port, const char* Data);
+char          UART_GetChar          (unsigned int Port);
+void          UART_Write            (unsigned int Port, const char* Data, unsigned int Length);
+void          UART_Read             (unsigned int Port, char* Data, unsigned int Length);
+void          UART_ReadLine         (unsigned int Port, char* Data, unsigned int MaxLength);
 
-void	      UART_SetInterrupt	  (unsigned int Port, unsigned int Mode, unsigned int Priority, unsigned int SubPriority);
+void	        UART_SetInterrupt	    (unsigned int Port, unsigned int Mode, unsigned int Priority, unsigned int SubPriority);
 
-void	      UART_EnableInterrupt(unsigned int Port, unsigned int Enabled);
-void	      UART_EnableTXInterrupt(unsigned int Port, unsigned int Enabled);
-void	      UART_EnableRXInterrupt(unsigned int Port, unsigned int Enabled);
+void	        UART_EnableInterrupt  (unsigned int Port, unsigned int Enabled);
+void	        UART_EnableTXInterrupt(unsigned int Port, unsigned int Enabled);
+void	        UART_EnableRXInterrupt(unsigned int Port, unsigned int Enabled);
 
-void	      UART_ClearInterrupt (unsigned int Port);
-void	      UART_ClearTXInterrupt(unsigned int Port);
-void	      UART_ClearRXInterrupt(unsigned int Port);
+void	        UART_ClearInterrupt   (unsigned int Port);
+void	        UART_ClearTXInterrupt (unsigned int Port);
+void	        UART_ClearRXInterrupt (unsigned int Port);
 
-unsigned int  UART_CheckInterrupt(unsigned int Port);
-unsigned int  UART_CheckTXInterrupt(unsigned int Port);
-unsigned int  UART_CheckRXInterrupt(unsigned int Port);
+unsigned int  UART_CheckInterrupt   (unsigned int Port);
+unsigned int  UART_CheckTXInterrupt (unsigned int Port);
+unsigned int  UART_CheckRXInterrupt (unsigned int Port);
 
 #ifndef UART_CONSOLE_SPEED
 #define UART_CONSOLE_SPEED 115200
 #endif
 
+#ifdef UART_CONSOLE
+#define Console_Write(s)          UART_PutString(UART_CONSOLE, (s))
+#define Console_WriteChar(c)      UART_PutChar(UART_CONSOLE, (c))
+#define Console_GetChar()         UART_GetChar(UART_CONSOLE)
+#define Console_ReadLine(p, len)  UART_ReadLine(UART_CONSOLE, (p), (len))
+#define Console_Read(p, len)      UART_Read(UART_CONSOLE, (p), (len))
+#define Console_WriteLine(s)      do { Console_Write(s); Console_Write("\r\n"); } while (0)
+#endif
