@@ -79,3 +79,5 @@
 
 #define POLARITY_RISE 1
 #define POLARITY_FALL 0
+
+#define HAS_BITS(value, bits) (((value) & (bits)) == bits ? 1 : 0)
