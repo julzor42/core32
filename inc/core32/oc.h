@@ -23,17 +23,14 @@
 */
 #pragma once
 
-#define BASEADDRESS_OC      0xBF803000
-#define OCxCON_BASE(x)      _SFR_ADDR(BASEADDRESS_OC, 0x200, x)
-
 //
 // SFRs
 //
-#define OCxR(x)             _SFR(OCxCON_BASE(x) + 0x10)
-#define OCxRS(x)            _SFR(OCxCON_BASE(x) + 0x20)
-#define OCxCON(x)           _SFR(OCxCON_BASE(x))
-#define OCxCONCLR(x)        _SFR_CLR(OCxCON_BASE(x))
-#define OCxCONSET(x)        _SFR_SET(OCxCON_BASE(x))
+#define OCxCON(x)           _SFR_KEY_PTR(OC, x, 0x00)
+#define OCxCONCLR(x)        _SFR_KEY_CLR(OC, x, 0x00)
+#define OCxCONSET(x)        _SFR_KEY_SET(OC, x, 0x00)
+#define OCxR(x)             _SFR_KEY_PTR(OC, x, 0x10)
+#define OCxRS(x)            _SFR_KEY_PTR(OC, x, 0x20)
 
 //
 // Functions

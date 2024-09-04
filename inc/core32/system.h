@@ -31,12 +31,19 @@
 //
 // Special function registers
 //
-#define _SFR(addr)             *((volatile unsigned int*)(addr))
-#define _SFR_CLR(addr)         _SFR((addr) + 0x04)
-#define _SFR_SET(addr)         _SFR((addr) + 0x08)
-#define _SFR_INV(addr)         _SFR((addr) + 0x0c)
-#define _SFR_ADDR(addr, sz, n) ((addr) + ((sz) * (n)))
-#define _SFR_TYPE(type, addr)  ((volatile type*)(addr))
+#define _SFR_PTR(addr)            *((volatile unsigned int*)(addr))
+#define _SFR_CLR(addr)            _SFR_PTR((addr) + 0x04)
+#define _SFR_SET(addr)            _SFR_PTR((addr) + 0x08)
+#define _SFR_INV(addr)            _SFR_PTR((addr) + 0x0c)
+#define _SFR_ADDR(addr, sz, n)    ((addr) + ((sz) * (n)))
+#define _SFR_TYPE(type, addr)     ((volatile type*)(addr))
+
+#define _SFR_KEY(key, x)            _SFR_ADDR(SFR_##key##_BASE, SFR_##key##_SIZE, x)
+#define _SFR_KEY_TYPE(type, key, x) _SFR_TYPE(type, _SFR_KEY(key, x))
+#define _SFR_KEY_PTR(key, x, off)   _SFR_PTR(_SFR_KEY(key, x) + (off))
+#define _SFR_KEY_CLR(key, x, off)   _SFR_CLR(_SFR_KEY(key, x) + (off))
+#define _SFR_KEY_SET(key, x, off)   _SFR_SET(_SFR_KEY(key, x) + (off))
+#define _SFR_KEY_INV(key, x, off)   _SFR_INV(_SFR_KEY(key, x) + (off))
 
 //
 // Functions

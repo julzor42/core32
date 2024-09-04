@@ -23,21 +23,14 @@
 */
 #pragma once
 
-#define BASEADDRESS_TIMER   0xBF800600
-#define TxCON_BASE(x)       _SFR_ADDR(BASEADDRESS_TIMER, 0x200, x)
-
 //
 // SFRs
 //
-#define TMRx(x)             _SFR(TxCON_BASE(x) + 0x10)
-#define PRx(x)              _SFR(TxCON_BASE(x) + 0x20)
-
-//
-// TxCON
-//
-#define TxCON(x)            _SFR(TxCON_BASE(x))
-#define TxCONCLR(x)         _SFR_CLR(TxCON_BASE(x))
-#define TxCONSET(x)         _SFR_SET(TxCON_BASE(x))
+#define TMRx(x)             _SFR_KEY_PTR(TIMER, x, 0x10)
+#define PRx(x)              _SFR_KEY_PTR(TIMER, x, 0x20)
+#define TxCON(x)            _SFR_KEY_PTR(TIMER, x, 0x00)
+#define TxCONCLR(x)         _SFR_KEY_CLR(TIMER, x, 0x00)
+#define TxCONSET(x)         _SFR_KEY_SET(TIMER, x, 0x00)
 
 #define TXCON_TCS           1 << 1
 #define TXCON_TSYNC         1 << 2

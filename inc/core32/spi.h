@@ -23,20 +23,18 @@
 */
 #pragma once
 
-#define BASEADDRESS_SPI     0xBF805800
-#define SPIxCON_BASE(x)     _SFR_ADDR(BASEADDRESS_SPI, 0x200, x)
 
 //
 // SFRs
 //
-#define SPIxBUF(x)          _SFR(SPIxCON_BASE(x) + 0x20)
-#define SPIxBRG(x)          _SFR(SPIxCON_BASE(x) + 0x30)
-#define SPIxCON(x)          _SFR(SPIxCON_BASE(x))
-#define SPIxCONCLR(x)       _SFR_CLR(SPIxCON_BASE(x))
-#define SPIxCONSET(x)       _SFR_SET(SPIxCON_BASE(x))
-#define SPIxSTAT(x)         _SFR(SPIxCON_BASE(x) + 0x10)
-#define SPIxSTATCLR(x)      _SFR_CLR(SPIxCON_BASE(x) + 0x10)
-#define SPIxSTATSET(x)      _SFR_SET(SPIxCON_BASE(x) + 0x10)
+#define SPIxCON(x)          _SFR_KEY_PTR(SPI, x, 0x00)
+#define SPIxCONCLR(x)       _SFR_KEY_CLR(SPI, x, 0x00)
+#define SPIxCONSET(x)       _SFR_KEY_SET(SPI, x, 0x00)
+#define SPIxSTAT(x)         _SFR_KEY_PTR(SPI, x, 0x10)
+#define SPIxSTATCLR(x)      _SFR_KEY_CLR(SPI, x, 0x10)
+#define SPIxSTATSET(x)      _SFR_KEY_SET(SPI, x, 0x10)
+#define SPIxBUF(x)          _SFR_KEY_PTR(SPI, x, 0x20)
+#define SPIxBRG(x)          _SFR_KEY_PTR(SPI, x, 0x30)
 
 //
 // SPI Ports

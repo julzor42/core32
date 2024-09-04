@@ -23,21 +23,18 @@
 */
 #pragma once
 
-#define BASEADDRESS_UART    0xBF806000
-#define UxMODE_BASE(x)      _SFR_ADDR(BASEADDRESS_UART, 0x200, x)
-
 //
 // SFRs
 //
-#define UxTXREG(x)          _SFR(UxMODE_BASE(x) + 0x20)
-#define UxRXREG(x)          _SFR(UxMODE_BASE(x) + 0x30)
-#define UxBRG(x)            _SFR(UxMODE_BASE(x) + 0x40)
-#define UxMODE(x)           _SFR(UxMODE_BASE(x))
-#define UxMODECLR(x)        _SFR_CLR(UxMODE_BASE(x))
-#define UxMODESET(x)        _SFR_SET(UxMODE_BASE(x))
-#define UxSTA(x)            _SFR(UxMODE_BASE(x) + 0x10)
-#define UxSTACLR(x)         _SFR_CLR(UxMODE_BASE(x) + 0x10)
-#define UxSTASET(x)         _SFR_SET(UxMODE_BASE(x) + 0x10)
+#define UxMODE(x)           _SFR_KEY_PTR(UART, x, 0x00)
+#define UxMODECLR(x)        _SFR_KET_CLR(UART, x, 0x00)
+#define UxMODESET(x)        _SFR_KEY_SET(UART, x, 0x00)
+#define UxSTA(x)            _SFR_KEY_PTR(UART, x, 0x10)
+#define UxSTACLR(x)         _SFR_KET_CLR(UART, x, 0x10)
+#define UxSTASET(x)         _SFR_KEY_SET(UART, x, 0x10)
+#define UxTXREG(x)          _SFR_KEY_PTR(UART, x, 0x20)
+#define UxRXREG(x)          _SFR_KEY_PTR(UART, x, 0x30)
+#define UxBRG(x)            _SFR_KEY_PTR(UART, x, 0x40)
 //
 // Core32 Flags
 //

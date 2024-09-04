@@ -23,23 +23,20 @@
 */
 #pragma once
 
-#define BASEADDRESS_I2C     0xBF805000
-#define I2CxCON_BASE(x)     _SFR_ADDR(BASEADDRESS_I2C, 0x100, x)
-
 //
 // SFRs
 //
-#define I2CxCON(x)          _SFR(I2CxCON_BASE(x))
-#define I2CxCONCLR(x)       _SFR_CLR(I2CxCON_BASE(x))
-#define I2CxCONSET(x)       _SFR_SET(I2CxCON_BASE(x))
-#define I2CxSTAT(x)         _SFR(I2CxCON_BASE(x)     + 0x10)
-#define I2CxSTAT_CLR(x)     _SFR_CLR(I2CxCON_BASE(x) + 0x10)
-#define I2CxSTAT_SET(x)     _SFR_SET(I2CxCON_BASE(x) + 0x10)
-#define I2CxADD(x)          _SFR(I2CxCON_BASE(x)     + 0x20)
-#define I2CxMSK(x)          _SFR(I2CxCON_BASE(x)     + 0x30)
-#define I2CxBRG(x)          _SFR(I2CxCON_BASE(x)     + 0x40)
-#define I2CxTRN(x)          _SFR(I2CxCON_BASE(x)     + 0x50)
-#define I2CxRCV(x)          _SFR(I2CxCON_BASE(x)     + 0x60)
+#define I2CxCON(x)          _SFR_KEY_PTR(I2C, x, 0x00)
+#define I2CxCONCLR(x)       _SFR_KEY_CLR(I2C, x, 0x00)
+#define I2CxCONSET(x)       _SFR_KEY_SET(I2C, x, 0x00)
+#define I2CxSTAT(x)         _SFR_KEY_PTR(I2C, x, 0x10)
+#define I2CxSTAT_CLR(x)     _SFR_KEY_CLR(I2C, x, 0x10)
+#define I2CxSTAT_SET(x)     _SFR_KEY_SET(I2C, x, 0x10)
+#define I2CxADD(x)          _SFR_KEY_PTR(I2C, x, 0x20)
+#define I2CxMSK(x)          _SFR_KEY_PTR(I2C, x, 0x30)
+#define I2CxBRG(x)          _SFR_KEY_PTR(I2C, x, 0x40)
+#define I2CxTRN(x)          _SFR_KEY_PTR(I2C, x, 0x50)
+#define I2CxRCV(x)          _SFR_KEY_PTR(I2C, x, 0x60)
 
 //
 // I2CxCON

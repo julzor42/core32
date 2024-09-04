@@ -47,6 +47,15 @@
 #define EX1632_RST_A_TRIS _TRISF3
 #define EX1632_RST_B_TRIS _TRISE9
 
+#define BUTTON_EX1632_S3_PORT  PortD
+#define BUTTON_EX1632_S3_PIN   PIN_6
+#define BUTTON_EX1632_S4_PORT  PortD
+#define BUTTON_EX1632_S4_PIN   PIN_13
+#define BUTTON_EX1632_S5_PORT  PortA
+#define BUTTON_EX1632_S5_PIN   PIN_7
+#define BUTTON_EX1632_S6_PORT  PortD
+#define BUTTON_EX1632_S6_PIN   PIN_7
+
 void    Board_Startup();
 
 #endif /* _EXPLORER1632_H_ */

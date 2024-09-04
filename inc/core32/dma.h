@@ -23,9 +23,6 @@
 */
 #pragma once
 
-#define   BASEADDRESS_DMA    0xBF883060
-#define   DCHxCON_BASE(x)    _SFR_ADDR(BASEADDRESS_DMA, 0xC0, x)
-
 //
 // DMA Channels
 //
@@ -44,22 +41,22 @@
 //
 // SFRs
 //
-#define   DCHxCON(x)        _SFR(DCHxCON_BASE(x))
-#define   DCHxCONCLR(x)     _SFR_CLR(DCHxCON_BASE(x))
-#define   DCHxCONSET(x)     _SFR_SET(DCHxCON_BASE(x))
-#define   DCHxECON(x)       _SFR(DCHxCON_BASE(x) + 0x10)
-#define   DCHxECONSET(x)    _SFR_SET(DCHxCON_BASE(x) + 0x10)
-#define   DCHxECONCLR(x)    _SFR_CLR(DCHxCON_BASE(x) + 0x10)
-#define   DCHxINT(x)        _SFR(DCHxCON_BASE(x) + 0x20)
-#define   DCHxSSA(x)        _SFR(DCHxCON_BASE(x) + 0x30)
-#define   DCHxDSA(x)        _SFR(DCHxCON_BASE(x) + 0x40)
-#define   DCHxSSIZ(x)       _SFR(DCHxCON_BASE(x) + 0x50)
-#define   DCHxDSIZ(x)       _SFR(DCHxCON_BASE(x) + 0x60)
-#define   DCHxSPTR(x)       _SFR(DCHxCON_BASE(x) + 0x70)
-#define   DCHxDPTR(x)       _SFR(DCHxCON_BASE(x) + 0x80)
-#define   DCHxCSIZ(x)       _SFR(DCHxCON_BASE(x) + 0x90)
-#define   DCHxCPTR(x)       _SFR(DCHxCON_BASE(x) + 0xA0)
-#define   DCHxDAT(x)        _SFR(DCHxCON_BASE(x) + 0xB0)
+#define   DCHxCON(x)        _SFR_KEY_PTR(DMA, x, 0x00)
+#define   DCHxCONCLR(x)     _SFR_KEY_CLR(DMA, x, 0x00)
+#define   DCHxCONSET(x)     _SFR_KEY_SET(DMA, x, 0x00)
+#define   DCHxECON(x)       _SFR_KEY_PTR(DMA, x, 0x10)
+#define   DCHxECONSET(x)    _SFR_KEY_SET(DMA, x, 0x10)
+#define   DCHxECONCLR(x)    _SFR_KEY_CLR(DMA, x, 0x10)
+#define   DCHxINT(x)        _SFR_KEY_PTR(DMA, x, 0x20)
+#define   DCHxSSA(x)        _SFR_KEY_PTR(DMA, x, 0x30)
+#define   DCHxDSA(x)        _SFR_KEY_PTR(DMA, x, 0x40)
+#define   DCHxSSIZ(x)       _SFR_KEY_PTR(DMA, x, 0x50)
+#define   DCHxDSIZ(x)       _SFR_KEY_PTR(DMA, x, 0x60)
+#define   DCHxSPTR(x)       _SFR_KEY_PTR(DMA, x, 0x70)
+#define   DCHxDPTR(x)       _SFR_KEY_PTR(DMA, x, 0x80)
+#define   DCHxCSIZ(x)       _SFR_KEY_PTR(DMA, x, 0x90)
+#define   DCHxCPTR(x)       _SFR_KEY_PTR(DMA, x, 0xA0)
+#define   DCHxDAT(x)        _SFR_KEY_PTR(DMA, x, 0xB0)
 
 #define   DMA_Enable()                DMACONbits.ON = 1
 #define   DMA_Disable()               DMACONbits.ON = 0

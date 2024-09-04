@@ -23,8 +23,6 @@
 */
 #pragma once
 
-#define PORT(x)             _SFR_TYPE(Port_t, _SFR_ADDR(SFR_BASE_GPIO, SFR_SIZE_GPIO, x))
-
 typedef struct              Port_s
 {         
   unsigned int              TRIS;
@@ -50,6 +48,7 @@ typedef struct              Port_s
 
 typedef volatile Port_t*    VPort;
 
+#define PORT(x)             _SFR_KEY_TYPE(Port_t, GPIO, x)
 #define PortA               PORT(0)
 #define PortB               PORT(1)
 #define PortC               PORT(2)
@@ -87,3 +86,6 @@ typedef volatile Port_t*    VPort;
 #define GPIO_CheckBits(p, b)   (GPIO_GetBits(p, b) == (b))
 #define GPIO_ClearBits(p, b)   p->LATCLR = (b)
 #define GPIO_ToggleBits(p, b)  p->LATINV = (b)
+
+#define GPIO_GetButton(key)    GPIO_GetBits(BUTTON_##key##_PORT, BUTTON_##key##_PIN)
+#define GPIO_InitButton(key)   GPIO_SetInput(BUTTON_##key##_PORT, BUTTON_##key##_PIN)
