@@ -23,13 +23,7 @@
 */
 #pragma once
 
-#ifdef PIC32MX2
-#define BASEADDRESS_GPIO    0xBF886010
-#define PORT(x)             _SFR_TYPE(Port_t, _SFR_ADDR(BASEADDRESS_GPIO, 0x100, x))
-#else
-#define BASEADDRESS_GPIO    0xBF886000
-#define PORT(x)             _SFR_TYPE(Port_t, _SFR_ADDR(BASEADDRESS_GPIO, 0x40, x))
-#endif
+#define PORT(x)             _SFR_TYPE(Port_t, _SFR_ADDR(SFR_BASE_GPIO, SFR_SIZE_GPIO, x))
 
 typedef struct              Port_s
 {         

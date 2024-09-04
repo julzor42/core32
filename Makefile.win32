@@ -1,0 +1,53 @@
+CORE32PATH ?=../core32
+
+CORE32SRC=$(wildcard $(CORE32PATH)/src/*.c)
+CORE32SRC += $(wildcard $(CORE32PATH)/tasks/*.c)
+CORE32OBJ=$(patsubst %.c,%.o,$(CORE32SRC))
+CORE32INC=$(CORE32PATH)/inc
+CORE32DRV=$(CORE32PATH)/drivers
+
+MPLABPATH ?= C:\Program Files\Microchip\MPLABX\v6.20
+IPECMD ?= $(MPLABPATH)/mplab_platform/mplab_ipe/ipecmd.exe
+
+CC=xc32-gcc
+CXX=xc32-g++
+LD=xc32-ld
+BIN2HEX=xc32-bin2hex
+
+CFLAGS +=   -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) -Wall -MMD
+CXXFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) -Wall -MMD
+LDFLAGS +=  -mprocessor=$(PROC)
+
+OBJC=$(patsubst %.c,%.o,$(SRC))
+OBJC2=$(patsubst %.cpp,%.o,$(OBJC))
+OBJ += $(OBJC2) $(CORE32OBJ)
+
+DFILES = $(patsubst %.o,%.d,$(OBJ))
+
+$(NAME): all
+
+all: $(OBJ)
+	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS)
+	$(BIN2HEX) -a $(NAME)
+
+clean:
+	rm -f $(OBJ) $(DFILES)
+
+fclean: clean
+	rm -f $(NAME) $(NAME).hex
+
+re: fclean all
+
+disas:
+	xc32-objdump -d $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+program:
+	$(IPECMD) -TP$(PROGRAMMER) -P$(PROC) -M -F"./$(NAME).hex" -OL
+
+program-clean:
+	rm MPLABXLog.* log.*

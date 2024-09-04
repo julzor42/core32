@@ -36,6 +36,7 @@
 // User configuration file
 #include <core32conf.h>
 
+#include <core32/sfrs.h>
 #include <core32/system.h>
 
 //
