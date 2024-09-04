@@ -21,9 +21,10 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#include <core32/tasks/console.h>
 
-#ifdef USE_TASK_CONSOLE
+#ifdef TASK_console
+#include <tasks/console.h>
+
 #include <string.h>
 
 void Task_Console(Task_t* task);

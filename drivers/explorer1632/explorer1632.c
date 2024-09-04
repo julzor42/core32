@@ -46,3 +46,10 @@ void Board_Startup()
 #endif
   
 }
+
+void EX1632_InitLeds()
+{
+  ADC_SetDigital(PINS_ALL);
+  GPIO_SetOutput(PortA, PINS_ALL);
+  GPIO_ClearBits(PortA, PINS_ALL);
+}

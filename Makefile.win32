@@ -1,28 +1,35 @@
-CORE32PATH ?=../core32
+NAME   ?= firmware
+SRC    ?= $(wildcard src/*.c)
+CFLAGS ?= -I./src -O1
 
-CORE32SRC=$(wildcard $(CORE32PATH)/src/*.c)
-CORE32SRC += $(wildcard $(CORE32PATH)/tasks/*.c)
-CORE32OBJ=$(patsubst %.c,%.o,$(CORE32SRC))
-CORE32INC=$(CORE32PATH)/inc
-CORE32DRV=$(CORE32PATH)/drivers
+CORE32PATH ?= ../core32
+CORE32INC   = $(CORE32PATH)/inc
+CORE32DRV   = $(CORE32PATH)/drivers
+CORE32TSK   = $(CORE32PATH)/tasks
+CORE32SRC   = $(wildcard $(CORE32PATH)/src/*.c)
+CORE32SRC  += $(foreach d, $(TASK),   $(wildcard $(CORE32TSK)/$(d)/*.c))
+CORE32SRC  += $(foreach d, $(DRIVER), $(wildcard $(CORE32DRV)/$(d)/*.c))
+CORE32OBJ   = $(patsubst %.c, %.o, $(CORE32SRC))
+
+CORE32FLAGS += $(foreach d, $(DRIVER),-DDRIVER_$(d))
+CORE32FLAGS += $(foreach d, $(TASK),-DTASK_$(d))
 
 MPLABPATH ?= C:\Program Files\Microchip\MPLABX\v6.20
-IPECMD ?= $(MPLABPATH)/mplab_platform/mplab_ipe/ipecmd.exe
+IPECMD    ?= $(MPLABPATH)/mplab_platform/mplab_ipe/ipecmd.exe
 
-CC=xc32-gcc
-CXX=xc32-g++
-LD=xc32-ld
-BIN2HEX=xc32-bin2hex
+CC       = xc32-gcc
+CXX      = xc32-g++
+LD       = xc32-ld
+BIN2HEX  = xc32-bin2hex
 
-CFLAGS +=   -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) -Wall -MMD
-CXXFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) -Wall -MMD
-LDFLAGS +=  -mprocessor=$(PROC)
+CFLAGS   += -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) $(CORE32FLAGS) -Wall -MMD
+CXXFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) $(CORE32FLAGS) -Wall -MMD
+LDFLAGS  += -mprocessor=$(PROC)
 
-OBJC=$(patsubst %.c,%.o,$(SRC))
-OBJC2=$(patsubst %.cpp,%.o,$(OBJC))
-OBJ += $(OBJC2) $(CORE32OBJ)
-
-DFILES = $(patsubst %.o,%.d,$(OBJ))
+OBJC      = $(patsubst %.c, %.o, $(SRC))
+OBJC2     = $(patsubst %.cpp, %.o, $(OBJC))
+OBJ      += $(OBJC2) $(CORE32OBJ)
+DFILES    = $(patsubst %.o, %.d, $(OBJ))
 
 $(NAME): all
 

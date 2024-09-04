@@ -23,7 +23,7 @@
 */
 #pragma once
 
-#ifdef USE_TASK_CONSOLE
+#ifdef TASK_console
 
 #include <core32.h>
 #include <stdint.h>

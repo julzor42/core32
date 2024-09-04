@@ -48,6 +48,10 @@ typedef struct              Port_s
 
 typedef volatile Port_t*    VPort;
 
+#define GPIO_GetButton(key)    GPIO_GetBits(BUTTON_##key##_PORT, BUTTON_##key##_PIN)
+#define GPIO_InitButton(key)   GPIO_SetInput(BUTTON_##key##_PORT, BUTTON_##key##_PIN)
+
+
 #define PORT(x)             _SFR_KEY_TYPE(Port_t, GPIO, x)
 #define PortA               PORT(0)
 #define PortB               PORT(1)
@@ -87,5 +91,3 @@ typedef volatile Port_t*    VPort;
 #define GPIO_ClearBits(p, b)   p->LATCLR = (b)
 #define GPIO_ToggleBits(p, b)  p->LATINV = (b)
 
-#define GPIO_GetButton(key)    GPIO_GetBits(BUTTON_##key##_PORT, BUTTON_##key##_PIN)
-#define GPIO_InitButton(key)   GPIO_SetInput(BUTTON_##key##_PORT, BUTTON_##key##_PIN)
