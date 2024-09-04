@@ -1,0 +1,6 @@
+PROC       ?= 32MX795F512L
+PROGRAMMER ?= PKOB
+DRIVER     += explorer1632
+#TASK      += console
+
+include ../core32/Makefile.common

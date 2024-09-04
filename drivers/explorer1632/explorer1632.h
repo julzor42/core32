@@ -58,5 +58,6 @@
 
 void    Board_Startup();
 void    EX1632_InitLeds();
+void    EX1632_InitButtons();
 
 #endif /* _EXPLORER1632_H_ */

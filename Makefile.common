@@ -1,29 +1,43 @@
-CORE32SRC=$(wildcard $(CORE32PATH)/src/*.c)
-CORE32SRC += $(wildcard $(CORE32PATH)/tasks/*.c)
-CORE32OBJ=$(patsubst %.c,%.o,$(CORE32SRC))
-CORE32INC=$(CORE32PATH)/inc
-CORE32DRV=$(CORE32PATH)/drivers
-
-ifeq ($(MPLABPATH),)
-MPLABPATH := /opt/microchip/mplabx/v5.05
+ifeq ($(OS),Windows_NT)
+ MPLABPATH ?= C:\Program Files\Microchip\MPLABX\v6.20
+ IPECMD    ?= $(MPLABPATH)/mplab_platform/mplab_ipe/ipecmd.exe
+else
+ MPLABPATH ?= /opt/microchip/mplabx/v6.20
+ IPECMD		 ?= sudo java -jar $(MPLABPATH)/mplab_platform/mplab_ipe/ipecmd.jar
 endif
 
-IPECMD=sudo java -jar $(MPLABPATH)/mplab_platform/mplab_ipe/ipecmd.jar
+NAME   ?= firmware
+SRC    ?= $(wildcard src/*.c)
+CFLAGS ?= -I./src -O1
 
-CC=xc32-gcc
-CXX=xc32-g++
-LD=xc32-ld
-BIN2HEX=xc32-bin2hex
+CORE32PATH ?= ../core32
+CORE32INC   = $(CORE32PATH)/inc
+CORE32DRV   = $(CORE32PATH)/drivers
+CORE32TSK   = $(CORE32PATH)/tasks
+CORE32SRC   = $(wildcard $(CORE32PATH)/src/*.c)
+CORE32SRC  += $(foreach d, $(TASK),   $(wildcard $(CORE32TSK)/$(d)/*.c))
+CORE32SRC  += $(foreach d, $(DRIVER), $(wildcard $(CORE32DRV)/$(d)/*.c))
+CORE32OBJ   = $(patsubst %.c, %.o, $(CORE32SRC))
 
-CFLAGS +=   -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) -Wall -MMD
-CXXFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) -Wall -MMD
-LDFLAGS +=  -mprocessor=$(PROC)
+CORE32FLAGS += $(foreach d, $(DRIVER),-DDRIVER_$(d))
+CORE32FLAGS += $(foreach d, $(TASK),-DTASK_$(d))
 
-OBJC=$(patsubst %.c,%.o,$(SRC))
-OBJC2=$(patsubst %.cpp,%.o,$(OBJC))
-OBJ += $(OBJC2) $(CORE32OBJ)
+MPLABPATH ?= C:\Program Files\Microchip\MPLABX\v6.20
+IPECMD    ?= $(MPLABPATH)/mplab_platform/mplab_ipe/ipecmd.exe
 
-DFILES = $(patsubst %.o,%.d,$(OBJ))
+CC       = xc32-gcc
+CXX      = xc32-g++
+LD       = xc32-ld
+BIN2HEX  = xc32-bin2hex
+
+CFLAGS   += -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) $(CORE32FLAGS) -Wall -MMD
+CXXFLAGS += -mprocessor=$(PROC) -I$(CORE32INC) -I$(CORE32DRV) $(CORE32FLAGS) -Wall -MMD
+LDFLAGS  += -mprocessor=$(PROC)
+
+OBJC      = $(patsubst %.c, %.o, $(SRC))
+OBJC2     = $(patsubst %.cpp, %.o, $(OBJC))
+OBJ      += $(OBJC2) $(CORE32OBJ)
+DFILES    = $(patsubst %.o, %.d, $(OBJ))
 
 $(NAME): all
 

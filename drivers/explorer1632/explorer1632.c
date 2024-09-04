@@ -53,3 +53,10 @@ void EX1632_InitLeds()
   GPIO_SetOutput(PortA, PINS_ALL);
   GPIO_ClearBits(PortA, PINS_ALL);
 }
+
+void EX1632_InitButtons()
+{
+  GPIO_InitButton(S3);
+  GPIO_InitButton(S4);
+  GPIO_InitButton(S6);
+}
