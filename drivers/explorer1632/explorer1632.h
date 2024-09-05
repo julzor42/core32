@@ -56,6 +56,14 @@
 #define BUTTON_S6_PORT    PortD
 #define BUTTON_S6_PIN     PIN_7
 
+#define BIT_LCDE_PORT   PortD
+#define BIT_LCDE_PIN    PIN_4
+#define BIT_LCDRW_PORT  PortD
+#define BIT_LCDRW_PIN   PIN_5
+#define BIT_LCDRS_PORT  PortB
+#define BIT_LCDRS_PIN   PIN_15
+#define PORT_LCD        PortE
+
 void    Board_Startup();
 void    EX1632_InitLeds();
 void    EX1632_InitButtons();

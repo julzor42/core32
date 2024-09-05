@@ -50,7 +50,10 @@ typedef volatile Port_t*    VPort;
 
 #define GPIO_GetButton(key)    GPIO_GetBits(BUTTON_##key##_PORT, BUTTON_##key##_PIN)
 #define GPIO_InitButton(key)   GPIO_SetInput(BUTTON_##key##_PORT, BUTTON_##key##_PIN)
-
+#define GPIO_SetBit(key)       GPIO_SetBits(BIT_##key##_PORT, BIT_##key##_PIN)
+#define GPIO_ClearBit(key)     GPIO_ClearBits(BIT_##key##_PORT, BIT_##key##_PIN)
+#define GPIO_SetBitInput(key)  GPIO_SetInput(BIT_##key##_PORT, BIT_##key##_PIN)
+#define GPIO_SetBitOutput(key) GPIO_SetOutput(BIT_##key##_PORT, BIT_##key##_PIN)
 
 #define PORT(x)             _SFR_KEY_TYPE(Port_t, GPIO, x)
 #define PortA               PORT(0)
