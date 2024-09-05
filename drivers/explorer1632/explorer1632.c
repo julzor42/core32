@@ -45,6 +45,9 @@ void Board_Startup()
   CS2_TRIS = 0;
 #endif
   
+#ifdef DRIVER_nt7603
+  LCD_Init();
+#endif
 }
 
 void EX1632_InitLeds()
