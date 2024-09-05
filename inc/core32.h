@@ -70,4 +70,3 @@
 #include <core32/extint.h>
 #include <core32/cn.h>
 #include <core32/ring.h>
-#include <core32/commhw.h>
