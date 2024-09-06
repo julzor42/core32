@@ -21,6 +21,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
+#ifdef __PIC32MX__
+
 #include <core32.h>
 #include <core32/dma.h>
 
@@ -43,3 +45,5 @@ void DMA_SetStartInterrupt(unsigned int Channel, unsigned int Interrupt)
   
   DMA_EnableStartInterrupt(Channel);
 }
+
+#endif

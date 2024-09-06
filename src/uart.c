@@ -21,6 +21,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
+#ifdef __PIC32MX__
+
 #include <core32.h>
 #include <core32/uart.h>
 
@@ -211,3 +213,4 @@ unsigned int UART_CheckRXInterrupt(unsigned int Port)
 
   return 0;
 }
+#endif

@@ -24,6 +24,8 @@
 #include <core32.h>
 #include <core32/adc.h>
 
+#ifdef __PIC32MX__
+
 void ADC_Initialize()
 {
   AD1CON1 = 0;
@@ -48,3 +50,5 @@ unsigned int ADC_Read()
 
   return ADC1BUF0;
 }
+
+#endif

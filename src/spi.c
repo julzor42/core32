@@ -21,6 +21,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
+#ifdef __PIC32MX__
+
 #include <core32.h>
 #include <core32/spi.h>
 
@@ -64,3 +66,5 @@ void SPI_Print(unsigned int Port, unsigned char* Message)
     SPI_Data(Port, *Message++);
   }
 }
+
+#endif

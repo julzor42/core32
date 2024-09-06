@@ -62,7 +62,7 @@ disas:
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 program:
-	$(IPECMD) -TP$(PROGRAMMER) -P$(PROC) -M -F"./$(NAME).hex" -OL
+	$(IPECMD) -TP$(PROGRAMMER) -P$(PROC) -M -F"./$(NAME).hex" -W -OL
 
 program-clean:
 	rm MPLABXLog.* log.*

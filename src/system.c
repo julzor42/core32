@@ -28,7 +28,7 @@
 // Base configuration (SYSCLK = 80Mhz, PBCLK = SYSCLK)
 //
 #pragma config POSCMOD  = HS
-#pragma config FNOSC    = PRIPLL
+#pragma config FNOSC    = PRIPLL  
 #pragma config FPLLIDIV = DIV_2
 #pragma config FPLLMUL  = MUL_20
 #pragma config FPLLODIV = DIV_1
@@ -42,26 +42,24 @@
 
 #endif
 
-void System_Initialize()
+#define CORE32INLINE static inline
+
+CORE32INLINE void _System_KSEG0_Cacheable()
 {
-  unsigned int val;
-
-  BMXCONCLR = _BMXCON_BMXWSDRM_MASK;
-
-#ifdef _PCACHE
-  CHECONbits.PFMWS = 2; // 4 wait states (1 wait state each 20 Mhz)
-  CHECONbits.PREFEN = 3; // Enable predictive prefetch for both regions
-#endif
-
   // Make KSEG0 cacheable
   unsigned int config;
   config = _mfc0(_CP0_CONFIG, _CP0_CONFIG_SELECT);
   config &= ~_CP0_CONFIG_K0_MASK;
   config |= 3 << _CP0_CONFIG_K0_POSITION;
   _mtc0(_CP0_CONFIG, _CP0_CONFIG_SELECT, config);
+}
 
+CORE32INLINE void _System_Configure_Interrupts()
+{
   // Configure interrupts
 #if defined(SYSTEM_INT_SINGLE) || defined(SYSTEM_INT_MULTI)
+  unsigned int val;
+
   // set the CP0 cause IV bit high
   asm volatile("mfc0 %0,$13" : "=r"(val));
   val |= 0x00800000;
@@ -74,20 +72,60 @@ void System_Initialize()
   val = 0;
   asm volatile("ei %0" : "=r"(val));
 #endif
+}
 
+CORE32INLINE void _System_EnablePCache()
+{
+#ifdef _PCACHE
+#ifdef __PIC32MX__
+  CHECONbits.PFMWS = 2; // 4 wait states (1 wait state each 20 Mhz)
+  CHECONbits.PREFEN = 3; // Enable predictive prefetch for both regions
+#endif
+#endif
+}
+
+CORE32INLINE void _System_Configure_BusMatrix()
+{
+#ifdef __PIC32MX__
+  BMXCONCLR = _BMXCON_BMXWSDRM_MASK;
+#endif
+}
+
+CORE32INLINE void _System_Disable_JTAG()
+{
+#ifdef __PIC32MX__
   // Disable JTAG
   DDPCONbits.JTAGEN = 0;
+#endif
+}
 
+CORE32INLINE void _System_Configure_PeripheralClock()
+{
   // Setup peripheral clock
   System_SetPBDiv(SYSTEM_PBDIV);
+}
 
+CORE32INLINE void _System_Configure_CoreTimer()
+{
   // Setup core timer
   _CP0_SET_COMPARE(0xffffffff);
   _CP0_SET_COUNT(0x00000000);
 }
 
+void System_Initialize()
+{
+  _System_Configure_BusMatrix();
+  _System_EnablePCache();
+  _System_KSEG0_Cacheable();
+  _System_Configure_Interrupts();
+  _System_Disable_JTAG();
+  _System_Configure_PeripheralClock();
+  _System_Configure_CoreTimer();
+}
+
 void System_SetPBDiv(unsigned int PbDiv)
 {
+#ifdef __PIC32MX__
   System_Unlock();
   switch (PbDiv)
   {
@@ -101,18 +139,23 @@ void System_SetPBDiv(unsigned int PbDiv)
     break;
   }
   System_Lock();
+#endif
 }
 
 void System_Idle()
 {
+#ifdef __PIC32MX__
   OSCCONCLR = 0x10;
   asm volatile("wait");
+#endif
 }
 
 void System_Sleep()
 {
+#ifdef __PIC32MX__
   OSCCONSET = 0x10;
   asm volatile("wait");
+#endif
 }
 
 void System_DelayUs(unsigned int Delay)
@@ -160,27 +203,26 @@ void System_Reset()
   t++;
 }
 
-void System_Unlock()
+inline void System_Unlock()
 {
   SYSKEY = 0x0;
   SYSKEY = 0xAA996655;
   SYSKEY = 0x556699AA;
 }
 
-void System_Lock()
+inline void System_Lock()
 {
   SYSKEY = 0x0;
 }
 
 #ifdef PIC32MX2
-
-void System_UnlockPPS()
+inline void System_UnlockPPS()
 {
   System_Unlock();
   CFGCONbits.IOLOCK = 0;
 }
 
-void System_LockPPS()
+inline void System_LockPPS()
 {
   CFGCONbits.IOLOCK = 1;
   System_Lock();

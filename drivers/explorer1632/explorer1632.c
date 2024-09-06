@@ -52,7 +52,9 @@ void Board_Startup()
 
 void EX1632_InitLeds()
 {
+#ifdef __PIC32MX__
   ADC_SetDigital(PINS_ALL);
+#endif
   GPIO_SetOutput(PortA, PINS_ALL);
   GPIO_ClearBits(PortA, PINS_ALL);
 }

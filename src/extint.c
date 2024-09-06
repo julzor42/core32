@@ -21,6 +21,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
+#ifdef __PIC32MX__
+
 #include <core32.h>
 #include <core32/extint.h>
 
@@ -56,3 +58,5 @@ void INT_ClearExternalInterrupt(unsigned int Int)
     case INT_1: IFS0bits.INT1IF = 0; break;
   }
 }
+
+#endif

@@ -21,6 +21,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
+#ifdef __PIC32MX__
+
 #include <core32.h>
 #include <core32/timers.h>
 
@@ -126,3 +128,5 @@ void Timer_SetInterrupt(unsigned int Timer, unsigned int Enabled, unsigned int P
   Timer_ClearInterrupt(Timer);
   Timer_EnableInterrupt(Timer, Enabled);
 }
+
+#endif

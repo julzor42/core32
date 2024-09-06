@@ -68,6 +68,8 @@ void    Board_Startup();
 void    EX1632_InitLeds();
 void    EX1632_InitButtons();
 
+/* Devices on board */
+
 #ifdef DRIVER_nt7603
 # include <nt7603/nt7603.h>
 #endif

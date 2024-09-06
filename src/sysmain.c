@@ -37,8 +37,10 @@ int __attribute__((weak)) main()
   {
     System_Initialize();
 
-    #ifdef UART_CONSOLE
-    UART_Initialize(UART_CONSOLE, UART_CONSOLE_SPEED, UART_READWRITE);
+    #ifdef __PIC32MX__
+      #ifdef UART_CONSOLE
+      UART_Initialize(UART_CONSOLE, UART_CONSOLE_SPEED, UART_READWRITE);
+      #endif
     #endif
   }
 

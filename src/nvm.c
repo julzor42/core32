@@ -21,6 +21,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
+#ifdef __PIC32MX__
+
 #include <core32.h>
 #include <core32/nvm.h>
 #include <core32/dma.h>
@@ -75,3 +77,5 @@ unsigned int NVM_WriteRow(void* Address, void* Data)
   
   return NVM_Operation(NVMOP_ROW_PGM);
 }
+
+#endif
