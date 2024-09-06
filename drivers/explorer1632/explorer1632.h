@@ -64,6 +64,10 @@
 #define BIT_LCDRS_PIN     PIN_15
 #define PORT_LCD          PortE
 
+#define SRAM_CS    _RD12
+#define SRAM_TRIS  _TRISD12
+
+
 void    Board_Startup();
 void    EX1632_InitLeds();
 void    EX1632_InitButtons();

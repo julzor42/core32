@@ -1,7 +1,9 @@
 PROC       ?= 32MX795F512L
 PROGRAMMER ?= PKOB
+
 DRIVER     += explorer1632
 DRIVER     += nt7603
+DRIVER     += 25lc256
 
 #TASK      += console
 
