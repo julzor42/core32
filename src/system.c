@@ -1,7 +1,7 @@
 /*
   MIT License
 
-  Copyright (c) 2016 Julien Delmotte
+  Copyright (c) 2024 Julien Delmotte
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,6 @@
   SOFTWARE.
  */
 #include <core32.h>
-
-#ifdef SYSTEM_DEFAULT_BITS
-//
-// Base configuration (SYSCLK = 80Mhz, PBCLK = SYSCLK)
-//
-#pragma config POSCMOD  = HS
-#pragma config FNOSC    = PRIPLL  
-#pragma config FPLLIDIV = DIV_2
-#pragma config FPLLMUL  = MUL_20
-#pragma config FPLLODIV = DIV_1
-#pragma config FPBDIV   = DIV_1
-#pragma config FWDTEN   = OFF
-
-#ifdef SYSTEM_USE_USB
-#pragma config UPLLEN   = ON
-#pragma config UPLLIDIV = DIV_2
-#endif
-
-#endif
 
 #define CORE32INLINE static inline
 
@@ -156,12 +137,6 @@ void System_Sleep()
   OSCCONSET = 0x10;
   asm volatile("wait");
 #endif
-}
-
-void System_DelayUs(unsigned int Delay)
-{
-  unsigned int nStart = _CP0_GET_COUNT();
-  while ((_CP0_GET_COUNT() - nStart) < Delay * CORE_US);
 }
 
 unsigned int __attribute__((nomips16)) System_EnableInterrupts()

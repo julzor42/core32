@@ -21,13 +21,13 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
-#ifdef __PIC32MX__
 
 #include <core32.h>
 #include <core32/timers.h>
 
 void Timer_Initialize(unsigned int Timer, unsigned int Prescaler, unsigned short Period)
 {
+#ifdef __PIC32MX__
   // Disable and reset timer
   TxCON(Timer) = 0;
     
@@ -61,6 +61,7 @@ void Timer_Initialize(unsigned int Timer, unsigned int Prescaler, unsigned short
   Timer_SetPeriod(Timer, Period);
   
   Timer_Enable(Timer);
+#endif
 }
 
 void Timer_Wait(unsigned int Timer, unsigned int Cycles)
@@ -71,6 +72,7 @@ void Timer_Wait(unsigned int Timer, unsigned int Cycles)
 
 void Timer_ClearInterrupt(unsigned int Timer)
 {
+#ifdef __PIC32MX__  
   switch (Timer)
   {
     case TIMER_1: IFS0bits.T1IF = 0; break;
@@ -79,10 +81,12 @@ void Timer_ClearInterrupt(unsigned int Timer)
     case TIMER_4: IFS0bits.T4IF = 0; break;
     case TIMER_5: IFS0bits.T5IF = 0; break;
   }
+#endif
 }
 
 void Timer_EnableInterrupt(unsigned int Timer, unsigned int Enabled)
 {
+#ifdef __PIC32MX__
   switch (Timer)
   {
     case TIMER_1: IEC0bits.T1IE = Enabled; break;
@@ -91,10 +95,12 @@ void Timer_EnableInterrupt(unsigned int Timer, unsigned int Enabled)
     case TIMER_4: IEC0bits.T4IE = Enabled; break;
     case TIMER_5: IEC0bits.T5IE = Enabled; break;
   }
+#endif
 }
 
 void Timer_SetInterrupt(unsigned int Timer, unsigned int Enabled, unsigned int Priority, unsigned int SubPriority)
 {
+#ifdef __PIC32MX__
   Timer_EnableInterrupt(Timer, DISABLED);
 
   switch (Timer)
@@ -127,6 +133,5 @@ void Timer_SetInterrupt(unsigned int Timer, unsigned int Enabled, unsigned int P
   
   Timer_ClearInterrupt(Timer);
   Timer_EnableInterrupt(Timer, Enabled);
-}
-
 #endif
+}
